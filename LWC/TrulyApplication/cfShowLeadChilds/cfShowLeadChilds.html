@@ -1,0 +1,59 @@
+<template>
+            <div class="slds-grid slds-wrap slds-is-relative ">
+            <div style="position: fixed;z-index: 999999;top: 0;right: 0;">
+  <omnistudio-toast class="flexcard-toast-element" theme="slds" title="" message="" styletype=""> </omnistudio-toast>
+</div>
+            <div if:true={showLoader} class="slds-is-absolute vloc-loader_override" style="height: 100%; width: 100%; min-height:50px; background: transparent; z-index: 99;">
+  <div>
+   <omnistudio-spinner
+      variant="brand"
+      alternative-text="Loading content..."
+      size="medium"
+      theme="slds"
+      ></omnistudio-spinner>
+  </div>
+</div>
+            <template if:false={hasPermission}>
+              You don't have required permissions to view this card.
+            </template>
+            <template if:true={hasPermission}>
+              <template if:true={hasRecords}>
+                        <template for:each={_records} for:item="record" for:index="rindex">
+                            <omnistudio-flex-card-state if:true={record}  key={record._flex.uniqueKey} data-recordid={record.Id} record={record} data-statue="true"  data-index="0" data-rindex={rindex} class="cf-vlocity-state-0 cf-vlocity-state slds-size_12-of-12"  tracking-obj={_childCardTrackingObj} >
+      <div if:true={cardLoaded} class="slds-grid slds-wrap slds-card slds-p-around_x-small slds-m-bottom_x-small" style="">
+          <div data-style-id="state0element0" class="slds-col   slds-size_1-of-12  " data-rindex={rindex} style="" ><omnistudio-flex-icon data-style-id="state0element0_child"   card={card}  record={record}  icon-type="Salesforce SVG"  icon-name="standard:product"  size="medium"  extraclass="slds-icon_container slds-icon-standard-product "  variant="inverse"  imgsrc=""  theme="slds"  ></omnistudio-flex-icon>
+      </div><div data-style-id="state0element1" class="slds-col   slds-size_7-of-12  " data-rindex={rindex} style="" ><omnistudio-output-field data-style-id="state0element1_child"   card={card}  record={record}  merge-field="%3Cdiv%3E%7BProduct_Name__c%7D%3C/div%3E"  theme="slds"  ></omnistudio-output-field>
+      </div><div data-style-id="state0element2" class="slds-col   slds-size_3-of-12  " data-rindex={rindex} style="" ><omnistudio-flex-action data-style-id="state0element2_child"  tracking-obj={_childCardTrackingObj}  class= "state0element2_child flexActionElement" 
+        data-action-element-class="state0element2_child" onexecuteaction={performAction} data-show-spinner="false"
+        data-element-label="getselectedproduct"   state-obj={record}  card={card}  record={record}  label="Select"  icon-name="standard:multi_select_checkbox"  action-list='\[{"stateAction":{"id":"flex-action-1658046406940","type":"cardAction","targetType":"Web Page","openUrlIn":"Current Window","Web Page":{"targetName":"/apex"},"eventName":"selectcards"},"key":"1657956472122-298ajiyqp","label":"Update JSON","draggable":true,"isOpen":false,"actionIndex":0},{"key":"1658046722650-nx6nuxmav","label":"Send Data to Execute Product","draggable":true,"isOpen":true,"card":"{card}","stateAction":{"id":"flex-action-1658047129688","type":"DataAction","displayName":"Action","vlocityIcon":"standard-default","targetType":"Web Page","openUrlIn":"Current Window","Web Page":{"targetName":"/apex"},"message":"{\"type\":\"IntegrationProcedures\",\"value\":{\"dsDelay\":\"\",\"ipMethod\":\"PassSelectedProcedure_PassSelectedProcedure\",\"vlocityAsync\":false,\"inputMap\":{\"LeadId\":\"{Lead_Referral__c}\",\"ProductId\":\"{Product_Id__c}\",\"Selected\":\"{Product_Selected__c}\"}},\"orderBy\":{\"name\":\"\",\"isReverse\":\"\"},\"contextVariables\":[{\"name\":\"recordId\",\"val\":\"00Q8b00001x5IEHEA2\",\"id\":1},{\"name\":\"Lead_Referral__c\",\"val\":\"\",\"id\":6},{\"name\":\"Product_Id__c\",\"val\":\"\",\"id\":7},{\"name\":\"Product_Selected__c\",\"val\":\"\",\"id\":8}]}","responseNode":""},"actionIndex":1}]'  flyout-details='\{}'  display-as-button="true"  button-variant="neutral"  icon-only="true"  hide-action-icon="false"  styles='\{"label":{"textAlign":"right"}}'  theme="slds"  ></omnistudio-flex-action>
+      </div>
+        </div>
+      </omnistudio-flex-card-state>
+                        </template>
+                      </template>
+                      <template if:false={hasRecords}>
+                            <omnistudio-flex-card-state  record={record} data-statue="false"  data-index="0" data-rindex={rindex} class="cf-vlocity-state-0 cf-vlocity-state slds-size_12-of-12"  tracking-obj={_childCardTrackingObj} >
+      <div if:true={cardLoaded} class="slds-grid slds-wrap slds-card slds-p-around_x-small slds-m-bottom_x-small" style="">
+          <div data-style-id="state0element0" class="slds-col   slds-size_1-of-12  " data-rindex={rindex} style="" ><omnistudio-flex-icon data-style-id="state0element0_child"   card={card}  record={record}  icon-type="Salesforce SVG"  icon-name="standard:product"  size="medium"  extraclass="slds-icon_container slds-icon-standard-product "  variant="inverse"  imgsrc=""  theme="slds"  ></omnistudio-flex-icon>
+      </div><div data-style-id="state0element1" class="slds-col   slds-size_7-of-12  " data-rindex={rindex} style="" ><omnistudio-output-field data-style-id="state0element1_child"   card={card}  record={record}  merge-field="%3Cdiv%3E%7BProduct_Name__c%7D%3C/div%3E"  theme="slds"  ></omnistudio-output-field>
+      </div><div data-style-id="state0element2" class="slds-col   slds-size_3-of-12  " data-rindex={rindex} style="" ><omnistudio-flex-action data-style-id="state0element2_child"  tracking-obj={_childCardTrackingObj}  class= "state0element2_child flexActionElement" 
+        data-action-element-class="state0element2_child" onexecuteaction={performAction} data-show-spinner="false"
+        data-element-label="getselectedproduct"   state-obj={record}  card={card}  record={record}  label="Select"  icon-name="standard:multi_select_checkbox"  action-list='\[{"stateAction":{"id":"flex-action-1658046406940","type":"cardAction","targetType":"Web Page","openUrlIn":"Current Window","Web Page":{"targetName":"/apex"},"eventName":"selectcards"},"key":"1657956472122-298ajiyqp","label":"Update JSON","draggable":true,"isOpen":false,"actionIndex":0},{"key":"1658046722650-nx6nuxmav","label":"Send Data to Execute Product","draggable":true,"isOpen":true,"card":"{card}","stateAction":{"id":"flex-action-1658047129688","type":"DataAction","displayName":"Action","vlocityIcon":"standard-default","targetType":"Web Page","openUrlIn":"Current Window","Web Page":{"targetName":"/apex"},"message":"{\"type\":\"IntegrationProcedures\",\"value\":{\"dsDelay\":\"\",\"ipMethod\":\"PassSelectedProcedure_PassSelectedProcedure\",\"vlocityAsync\":false,\"inputMap\":{\"LeadId\":\"{Lead_Referral__c}\",\"ProductId\":\"{Product_Id__c}\",\"Selected\":\"{Product_Selected__c}\"}},\"orderBy\":{\"name\":\"\",\"isReverse\":\"\"},\"contextVariables\":[{\"name\":\"recordId\",\"val\":\"00Q8b00001x5IEHEA2\",\"id\":1},{\"name\":\"Lead_Referral__c\",\"val\":\"\",\"id\":6},{\"name\":\"Product_Id__c\",\"val\":\"\",\"id\":7},{\"name\":\"Product_Selected__c\",\"val\":\"\",\"id\":8}]}","responseNode":""},"actionIndex":1}]'  flyout-details='\{}'  display-as-button="true"  button-variant="neutral"  icon-only="true"  hide-action-icon="false"  styles='\{"label":{"textAlign":"right"}}'  theme="slds"  ></omnistudio-flex-action>
+      </div>
+        </div>
+      </omnistudio-flex-card-state>
+                      </template>
+            </template>
+            <template if:true={hasError}>
+            {error}
+            </template>
+            
+      <omnistudio-action action-wrapperclass="slds-hide" re-render-flyout class="action-trigger slds-col" onupdateos={updateOmniscript} onselectcards={updateSelectedCards} onsetvalue={updateAction} onfireactionevent={actionEvtHandler}>
+      
+      </omnistudio-action>
+  
+            <omnistudio-action class="execute-action" re-render-flyout action-wrapperclass="slds-hide" onupdateos={updateOmniscript} onselectcards={updateSelectedCards} onsetvalue={updateAction} onfireactionevent={actionEvtHandler}>
+            
+            </omnistudio-action>
+            </div>
+          </template>
