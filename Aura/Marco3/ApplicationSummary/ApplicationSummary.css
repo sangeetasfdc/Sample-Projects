@@ -1,0 +1,38 @@
+.THIS {
+    background-image: url('https://portal-marcofinancial2021.cs198.force.com/marconifinancial/resource/1635401351000/Banner') !important; 
+    height: 100vh;
+    width: 100%;
+    background-repeat: no-repeat;
+    background-size: 100% 100%;
+}
+.THIS .quest{
+    padding-top: 1%;
+    font-size: 30px;
+    font-family: url("{!$Resource.Oxygen}");
+}
+
+.THIS .heading{
+    padding-left:30%;
+}
+
+.THIS .question{
+    color: #FFFFFF;
+    padding-top: 4%;
+    padding-left: 4%;
+    font-family: url("{!$Resource.Oxygen}");
+}
+
+.THIS .Answer{
+    color: #29d4b0;
+    padding-top: 6.5%;
+    padding-left: 20%;
+  
+}
+.THIS .Icons{
+     color: #29D4B0;
+    margin-top: 10%;
+}
+.THIS  .Sub{
+    width:5%;
+    margin-top:3%;
+}

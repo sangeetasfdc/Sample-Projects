@@ -1,0 +1,359 @@
+<aura:component controller="PublicPreApprovalController" implements="force:appHostable,flexipage:availableForAllPageTypes">
+    
+    <aura:handler name="init" value="{!this}" action="{!c.doInit}"/>
+    <aura:handler name="cmpEventSingle" event="c:getchildValuesEvent" action="{!c.assignselectedvalues}"/>
+    
+    <!-- Lists attributes to hold all picklist values -->
+    <aura:attribute name="allcountries" type="List" default="" />
+    <aura:attribute name="allcurrencies" type="List" default="" />
+    <aura:attribute name="allregions" type="List" default="" />
+    <aura:attribute name="allsources" type="List" default="" />
+    <aura:attribute name="allsectors" type="List" default="" />
+    <aura:attribute name="allsubIndustries" type="List" default="" />
+    <aura:attribute name="allproducts" type="List" default="" />
+    <aura:attribute name="allamounts" type="List" default="" />
+    
+    <!-- attributes to hold selected picklist values -->
+    <aura:attribute name="scountry" type="String" default="" description="Selected value in single Select" />
+    <aura:attribute name="scurrency" type="list" default="[]" description="Selected value in single Select" />
+    <aura:attribute name="selectedRegion" type="List" default="[]" />
+    <aura:attribute name="selectedSource" type="String" default="" />
+    <aura:attribute name="selectedSector" type="String" default="" />
+    <aura:attribute name="selectedIndustry" type="String" default="" />
+    <aura:attribute name="selectedProduct" type="String" default="" />
+    <aura:attribute name="selectedAmount" type="String" default="" />
+    
+    <!-- attribute to save text input fields -->
+    <aura:attribute name="Email" type="String" default="" />
+    <aura:attribute name="organisationname" type="String" default="" />
+    <aura:attribute name="contactname" type="String" default=""/>
+    
+    <!-- attribute to store value for displaying question -->
+    <aura:attribute name="displayedSection" type="String" default="country" />
+    <aura:attribute name="displaybuttons" type="String" default="test" />
+    
+    <!-- new attributes -->
+    <aura:attribute name="progress" type="integer" default="9"/>
+    <aura:attribute name="emailverified" type="boolean"/>
+    <aura:attribute name="UserExists" type="boolean"/>
+    <aura:attribute name="spinner" type="boolean"/>
+    <aura:attribute name="approvalstatus" type="string"/>
+    <aura:attribute name="sourceNameVal" type="string"/>
+    
+    
+    <div>
+        
+        <aura:if isTrue="{!v.spinner}">
+            <div aura:id="spinnerId" class="slds-spinner_container">
+                <div class="slds-spinner--brand  slds-spinner slds-spinner--large slds-is-relative" role="alert">
+                    <span class="slds-assistive-text">Loading...</span>
+                    <div class="slds-spinner__dot-a"></div>
+                    <div class="slds-spinner__dot-b"></div>
+                </div>
+            </div>
+        </aura:if>
+        
+        <!--************************************** Progress bar ******************************************-->
+        <div style="padding-top:1rem;" class="{!if(v.displayedSection == 'country','slds-hide','slds-show')}">
+            <div class="baseprogressbar slds-align_absolute-center">
+                <div class="progress" id="progressbar">
+                    <div class="slds-progress-bar slds-progress-bar_small" aria-valuemin="0" aria-valuemax="100" aria-valuenow="{!v.progress}" aria-label="{{Placeholder for description of progress bar}}" role="progressbar">
+                        <span class="slds-progress-bar__value slds-progress-bar__value_success" style="{! 'width:  ' + v.progress + '%;'}">
+                            <span class="slds-assistive-text">Progress: {!v.progress}%</span>
+                        </span>
+                    </div>
+                    <div class="progressStatus">
+                        <strong>{!v.progress}% Complete</strong>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        
+        <!--********************************* Company location Page *****************************-->
+        <aura:if isTrue="{!$Browser.formFactor == 'PHONE' || $Browser.isPhone}">
+            
+            <!--******************************* Mobile only View **********************************-->
+            <div style="padding-top:10%;" class="{!if(v.displayedSection == 'country','slds-show deviceclass','slds-hide')}">
+                <div class="quest slds-align_absolute-center">company location</div>
+                <div style="max-width: 70%;" class="countrypick slds-align_absolute-center">
+                    <c:PicklistComponent picklisttype="country" options="{!v.allcountries}" multiSelect="false" label=""/><br></br>
+                </div>
+            </div>
+            
+            <!--******************************* Dekstop only View **********************************-->
+            <aura:set attribute="else">
+                <div class="{!if(v.displayedSection == 'country','slds-show deviceclass cntryheight','slds-hide')}">
+                    <div class="quest slds-align_absolute-center">company location</div>
+                    <div style="max-width: 70%;" class="countrypick slds-align_absolute-center">
+                        <c:PicklistComponent picklisttype="country" options="{!v.allcountries}" multiSelect="false" label=""/><br></br>
+                    </div>
+                </div>
+            </aura:set>            
+        </aura:if>
+        
+        
+        <!--**************************** Currency Page *****************************-->
+        <div class="{!if(v.displayedSection == 'currency','slds-show','slds-hide')}">
+            <div class="quest slds-align_absolute-center">which currency do you do business in?</div>
+            <div style="max-width: 70%;" class="countrypick slds-align_absolute-center">
+                <c:PicklistComponent picklisttype="currency" options="{!v.allcurrencies}" multiSelect="true" label=""/><br></br>
+            </div>
+        </div>
+        
+        
+        <!--**************************** Region Page *****************************-->
+        <div class="{!if(v.displayedSection == 'region','slds-show','slds-hide')}">
+            <aura:if isTrue="{!$Browser.formFactor == 'PHONE' || $Browser.isPhone}">
+                
+                <!--******************************* Mobile only View **********************************-->
+                <div class="quest slds-align_absolute-center">which regions do you do business in?</div>
+                <div style="width: 85%;" class="countrypick slds-align_absolute-center">
+                    <c:PicklistComponent picklisttype="region" options="{!v.allregions}" multiSelect="true" label=""/>
+                </div>
+                
+                <!--******************************* Dekstop only View **********************************-->
+                <aura:set attribute="else">
+                    <div class="quest slds-align_absolute-center">which regions do you do business in?</div>
+                    <div style="width: 69%; padding-left: 33%;" class="countrypick">
+                        <c:PicklistComponent picklisttype="region" options="{!v.allregions}" multiSelect="true" label=""/>
+                    </div>
+                </aura:set>
+            </aura:if>
+        </div>
+        
+        
+        <!--**************************** Source Page *****************************-->
+        <div class="{!if(v.displayedSection == 'source','slds-show','slds-hide')}">
+            <div class="quest slds-align_absolute-center">how did you hear about us?</div>
+            <aura:if isTrue="{!$Browser.formFactor == 'PHONE' || $Browser.isPhone}">
+                
+                <!--******************************* Mobile only View **********************************-->
+                <div style="width: 85%;" class="countrypick slds-align_absolute-center">
+                    <c:PicklistComponent picklisttype="source" options="{!v.allsources}" multiSelect="false" label=""/>
+                </div>
+                
+                <!--******************************* Dekstop only View **********************************-->
+                <aura:set attribute="else">
+                    <div style="width: 69%; padding-left: 33%;" class="countrypick">
+                        <c:PicklistComponent picklisttype="source" options="{!v.allsources}" multiSelect="false" label=""/>
+                    </div>
+                </aura:set>
+            </aura:if>
+        </div>
+        
+        
+        <!--************************ Other Source Name Page ***************************-->
+        <div class="{!if(v.displayedSection == 'sourceName','slds-show','slds-hide')}">
+            <div class="quest slds-align_absolute-center">Please fill if "Other" or "Referral" </div>
+            <div style="padding-top: 0.6rem;padding-bottom: 1.05rem;" class="slds-align_absolute-center">
+                <aura:if isTrue="{!$Browser.formFactor == 'PHONE' || $Browser.isPhone}">
+                    
+                    <!--******************************* Mobile only View **********************************-->
+                    <input style="width:85%" type="text" id="sourceNameid" value="{!v.sourceNameVal}" class="input" placeholder="enter other source name" onkeyup="{!c.enableNextsourcename}"/>
+                    
+                    <!--******************************* Dekstop only View **********************************-->
+                    <aura:set attribute="else">
+                        <input style="width:44%" type="text" id="sourceNameid" value="{!v.sourceNameVal}" class="input" placeholder="enter other source name" onkeyup="{!c.enableNextsourcename}"/>
+                    </aura:set>
+                    
+                </aura:if>
+            </div>
+        </div>
+        
+        
+        <!--************************ organization Page ***************************-->
+        <div class="{!if(v.displayedSection == 'organization','slds-show','slds-hide')}">
+            <div class="quest slds-align_absolute-center">organization</div>
+            <div style="padding-top: 0.6rem;padding-bottom: 1.05rem;" class="slds-align_absolute-center">
+                <aura:if isTrue="{!$Browser.formFactor == 'PHONE' || $Browser.isPhone}">
+                    
+                    <!--******************************* Mobile only View **********************************-->
+                    <input style="width:85%" type="text" id="orgid" value="{!v.organisationname}" class="input" placeholder="enter organization name" onkeyup="{!c.enableNext}"/>
+                    
+                    <!--******************************* Dekstop only View **********************************-->
+                    <aura:set attribute="else">
+                        <input style="width:44%" type="text" id="orgid" value="{!v.organisationname}" class="input" placeholder="enter organization name" onkeyup="{!c.enableNext}"/>
+                    </aura:set>
+                    
+                </aura:if>
+            </div>
+        </div>
+        
+        
+        <!--************************ Primary Contact Page **************************-->
+        <div class="{!if(v.displayedSection == 'contact','slds-show','slds-hide')}">
+            <div class="quest slds-align_absolute-center">primary contact</div>
+            <div style="padding-top: 0.6rem;padding-bottom: 1.05rem;" class="slds-align_absolute-center">
+                <aura:if isTrue="{!$Browser.formFactor == 'PHONE' || $Browser.isPhone}">
+                    
+                    <!--******************************* Mobile only View **********************************-->
+                    <input aura:id="contactname" style="width:85%" type="text" id="conid" value="{!v.contactname}" class="input" placeholder="enter contact name" onkeyup="{!c.enableNextcontactname}"/>
+                    
+                    <!--******************************* Dekstop only View **********************************-->
+                    <aura:set attribute="else">
+                        <input style="width:44%" type="text" id="conid" value="{!v.contactname}" class="input" placeholder="enter contact name" onkeyup="{!c.enableNextcontactname}"/>
+                    </aura:set>
+                </aura:if>
+            </div>
+        </div>
+        
+        
+        <!--******************************* Email Page *******************************-->
+        <div class="{!if(v.displayedSection == 'email','slds-show','slds-hide')}">
+            <div class="quest slds-align_absolute-center">email address</div>
+            <div style="padding-top: 0.6rem;padding-bottom: 1.05rem;" class="slds-align_absolute-center">
+                <aura:if isTrue="{!$Browser.formFactor == 'PHONE' || $Browser.isPhone}">
+                    
+                    <!--******************************* Mobile only View **********************************-->
+                    <input style="width:85%" type="text" id="emailid" value="{!v.email}" class="input" placeholder="enter email" onkeyup="{!c.enableNextEmail}"/>
+                    
+                    <!--******************************* Dekstop only View **********************************-->
+                    <aura:set attribute="else">
+                        <input style="width:44%" type="text" id="emailid" value="{!v.email}" class="input" placeholder="enter email" onkeyup="{!c.enableNextEmail}"/>
+                    </aura:set>
+                </aura:if>
+            </div>
+            
+            <!--******************************* Email Validation **********************************-->
+            <p id="validation" class="slds-align_absolute-center slds-m-bottom_small validateEmail"> </p>
+            
+            <!--***************************** Email exists in system ******************************-->
+            <div style="margin-top: -1.7%;" class="slds-align_absolute-center">
+                <div id="existinguservalidation" class="{!if(v.UserExists == True,'slds-show','slds-hide')}">
+                    <a href="#" class="slds-text-link_reset slds-align_absolute-center slds-p-top_x-small validate2">This email is already registered with us. 
+                        <span onclick="{!c.communitylogin}" class="slds-text-link"> &nbsp;Please login here</span>.
+                    </a>
+                </div>
+            </div>
+        </div>
+        
+        
+        <!--******************************* Sector Page *******************************-->
+        <div class="{!if(v.displayedSection == 'sector','slds-show','slds-hide')}">
+            <div class="quest slds-align_absolute-center">sector</div>
+            <aura:if isTrue="{!$Browser.formFactor == 'PHONE' || $Browser.isPhone}">
+                
+                <!--******************************* Mobile only View **********************************-->
+                <div style="width: 85%;" class="countrypick slds-align_absolute-center">
+                    <c:PicklistComponent picklisttype="sector" options="{!v.allsectors}" multiSelect="false" label=""/>
+                </div>
+                
+                <!--******************************* Dekstop only View **********************************-->
+                <aura:set attribute="else">
+                    <div style="width: 96%;" class="countrypick pickwidth">
+                        <c:PicklistComponent picklisttype="sector" options="{!v.allsectors}" multiSelect="false" label=""/>
+                    </div>
+                </aura:set>
+            </aura:if>
+        </div>
+        
+        
+        <!--******************************* Industry Page *******************************-->
+        <div class="{!if(v.displayedSection == 'industry','slds-show','slds-hide')}">
+            <div class="quest slds-align_absolute-center">industry</div>
+            <aura:if isTrue="{!$Browser.formFactor == 'PHONE' || $Browser.isPhone}">
+                
+                <!--******************************* Mobile only View **********************************-->
+                <div style="width: 85%;" class="countrypick slds-align_absolute-center">
+                    <c:PicklistComponent picklisttype="subindustry" options="{!v.allsubIndustries}" multiSelect="false" label=""/>
+                </div>
+                
+                <!--******************************* Dekstop only View **********************************-->
+                <aura:set attribute="else">
+                    <div style="width: 72%;" class="countrypick indwidth">
+                        <c:PicklistComponent picklisttype="subindustry" options="{!v.allsubIndustries}" multiSelect="false" label=""/>
+                    </div>
+                </aura:set>
+            </aura:if>
+        </div>
+        
+        
+        <!--*************************** Product Page *****************************-->
+        <div class="{!if(v.displayedSection == 'product','slds-show','slds-hide')}">
+            <div class="quest slds-align_absolute-center">which marco product are you applying for?</div>
+            <aura:if isTrue="{!$Browser.formFactor == 'PHONE' || $Browser.isPhone}">
+                
+                <!--************************ Mobile only View **********************************-->
+                <div style="width: 85%;" class="countrypick slds-align_absolute-center">
+                    <c:PicklistComponent picklisttype="product" options="{!v.allproducts}" multiSelect="false" label=""/>
+                </div>
+                
+                <!--************************ Dekstop only View **********************************-->
+                <aura:set attribute="else">
+                    <div style="width: 65%; padding-left: 33%;" class="countrypick">
+                        <c:PicklistComponent picklisttype="product" options="{!v.allproducts}" multiSelect="false" label=""/>
+                    </div>
+                </aura:set>
+            </aura:if>
+        </div>
+        
+        
+        <!--************************ All Amounts Page ************************-->
+        <div class="{!if(v.displayedSection == 'amount','slds-show','slds-hide')}">
+            <div class="quest slds-align_absolute-center">how much money do you need?</div>
+            <div style="max-width: 70%;" class="countrypick slds-align_absolute-center">
+                <c:PicklistComponent picklisttype="amount" options="{!v.allamounts}" multiSelect="false" label=""/>
+            </div>
+        </div>
+        
+        
+        <div class="{!if(v.displayedSection == 'successmessage','slds-show','slds-hide')}">
+            <div class="slds-align_absolute-center question">
+                Application Status
+            </div>
+            <div class="slds-col slds-align_absolute-center approve">
+                Please verify your email. You are almost there!. We sent an email to "{!v.Email}". 
+                If you don't see it, make sure to also check your spam folder. Contact us at support@marcofi.com
+            </div>
+            <div style="padding-top:1rem" class="slds-align_absolute-center">
+                <lightning:button class="nextbtn" variant="brand" label="Start Application Process" title="Brand action" onclick="{!c.startApplication}" />
+                <lightning:button class="nextbtn" variant="brand" label="Contact Us" title="Brand action" onclick="{!c.ContactUs}" />
+            </div>
+        </div>
+        
+        
+        <div class="{!if(v.displayedSection == 'errormessage','slds-show','slds-hide')}">
+            <div class="slds-col slds-align_absolute-center">
+                <div class="slds-align_absolute-center question">
+                    Application Status
+                </div>
+            </div>
+            <div class="slds-col slds-align_absolute-center approve">
+                At this time we are unable to pre approve your process. Please get in touch with the team or email directly at support@marcofi.com
+            </div>
+            <div style="padding-top:1rem" class="slds-align_absolute-center">
+                <lightning:button class="nextbtn" variant="brand" label="Get In Touch" title="Brand action" onclick="{!c.getintouch}" />
+            </div>
+        </div>
+        
+        
+        <!--**************************** Navigation Buttons ****************************-->
+        <aura:if isTrue="{!$Browser.formFactor == 'PHONE' || $Browser.isPhone}">
+            
+            <!--******************************* Mobile only View **********************************-->
+            <div style="" class="{!if(v.displayedSection == 'country','singlenextphone','bothbuttonphone')}">
+                <aura:if isTrue="{!v.displaybuttons != 'hidebuttons'}">
+                    <aura:if isTrue="{!v.displayedSection != 'country'}">
+                        <lightning:button class="nextbtn" iconName="utility:chevronleft"  label="Go Back" title="Brand action" onclick="{! c.previousQuestion }"/>
+                    </aura:if>
+                    <lightning:button class="nextbtn" aura:id="nextbuttonid" disabled="true" iconName="utility:chevronright" iconPosition="right" variant="brand" label="Next" title="Brand action" onclick="{! c.nextQuestioncntrl }" />
+                </aura:if>
+            </div>
+            
+            <!--******************************* Dekstop only View **********************************-->
+            <aura:set attribute="else">
+                <div class="{!if(v.displayedSection == 'country','singlenext','bothbutton')}">
+                    <aura:if isTrue="{!v.displaybuttons != 'hidebuttons'}">
+                        <aura:if isTrue="{!v.displayedSection != 'country'}">
+                            <lightning:button class="nextbtn" iconName="utility:chevronleft" variant="brand" label="Go Back" title="Brand action" onclick="{! c.previousQuestion }"/>
+                        </aura:if>
+                        <lightning:button class="nextbtn" aura:id="nextbuttonid" disabled="true" iconName="utility:chevronright" iconPosition="right" variant="brand" label="Next" title="Brand action" onclick="{! c.nextQuestioncntrl }" />
+                    </aura:if>
+                </div>
+            </aura:set>
+        </aura:if>
+        
+    </div>
+    
+</aura:component>

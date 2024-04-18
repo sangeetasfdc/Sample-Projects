@@ -1,0 +1,48 @@
+<aura:component controller="ApplicationPageController" access='public' implements="forceCommunity:availableForAllPageTypes,force:hasRecordId,force:appHostable">
+    
+    <aura:attribute name="appid" type="String" />
+    <aura:attribute name="questionAnswer" type="List" default='[]'/>
+    <aura:registerEvent name="ApplicationSummaryevent" type="c:ApplicationSummaryevent"/> 
+    <aura:attribute name="applicationSummaryData" type="Application__c" />
+    <aura:attribute name="appSubmitted" type="boolean"/>
+    
+    <aura:registerEvent name="summaryEventQuestion" type="c:SummaryEvent"/>
+    
+    <div style="height: 83vh;" class="Hading">
+        <div class="quest slds-align_absolute-center"><h1>Application Summary</h1>     
+        </div>
+        <div class="container slds-scrollable" style="margin:Auto;width:75%; margin-top:1.5%; height:20rem">
+            <!--after converting json here in loop format everytime u get the ans-->
+            <div>
+                <aura:iteration items="{!v.questionAnswer}" var="item">
+                    <div style="padding-left:12%;padding-top:.5%;">
+                        <lightning:layout>
+                            <lightning:layoutItem size="6">
+                                <div class="question">
+                                    <p><lightning:formattedText value="{!item.label}" /></p>
+                                </div>
+                            </lightning:layoutItem>
+                            <lightning:layoutItem size="4">
+                                <div class="Answer">
+                                    {!item.answer}
+                                </div>
+                            </lightning:layoutItem>
+                            <lightning:layoutItem size="2">
+                                <aura:if isTrue="{!!v.appSubmitted}">
+                                    <div data-value="{!item.apiName}"  onclick="{!c.openQuestion}">
+                                        <lightning:buttonIcon iconName="utility:edit" variant="bare" alternativeText="edit" title="edit" class="Icons"/>
+                                    </div>
+                                </aura:if>
+                            </lightning:layoutItem>
+                        </lightning:layout>
+                    </div>
+                </aura:iteration>
+            </div>
+        </div>
+        <div class="slds-align_absolute-center">  
+            <aura:if isTrue="{!!v.appSubmitted}">
+                <lightning:button aura:id="submitbuttonid" label="Submit" onclick="{!c.submitbtn}"  class="Sub" variant="Neutral"/>
+            </aura:if>
+        </div>          
+    </div>
+</aura:component>

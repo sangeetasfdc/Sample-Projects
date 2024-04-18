@@ -1,0 +1,239 @@
+.THIS{
+    background-image: url('https://portal-marcofinancial2021.cs198.force.com/marconifinancial/resource/1635401351000/Banner') !important; 
+    height: 100vh;
+    width: 100%;
+    background-repeat: no-repeat;
+    background-size: 100% 100%;
+}
+
+.THIS .cntryheight{
+    padding-top:22.5%;
+}
+
+@media only screen and (min-width: 1200px) {
+  .THIS .cntryheight {
+    padding-top: 8.8%;
+  }
+}
+
+@media only screen and (min-width: 600px) and (max-width: 800px) {
+  .THIS .cntryheight {
+    padding-top: 18.8%;
+  }
+}
+
+@media only screen and (min-width: 800px) and (max-width: 1000px) {
+  .THIS .cntryheight {
+    padding-top: 14%;
+  }
+}
+
+@media only screen and (min-width: 1000px) and (max-width: 1200px) {
+  .THIS .cntryheight {
+    padding-top: 10.8%;
+  }
+}
+
+.THIS .pickwidth{
+	padding-left:5%;    
+}
+
+@media only screen and (min-width: 700px) and (max-width: 900px) {
+  .THIS .pickwidth {
+    padding-left: 19%;
+  }
+}
+
+@media only screen and (min-width: 900px)  {
+  .THIS .pickwidth {
+    padding-left: 33%;
+  }
+}
+
+.THIS .indwidth{
+	padding-left: 18%;    
+}
+
+@media only screen and (min-width: 700px){
+  .THIS .indwidth {
+    padding-left: 33%;
+  }
+}
+
+.THIS .slds-spinner_container  {
+    background-color: #29d4b0;
+    color : #29d4b0;
+    opacity: 0.4;
+}
+
+.THIS .slds-spinner{
+    color : #29d4b0;
+}
+
+.THIS .question{
+    color: #ffffff;
+    font-size: 6vw;
+    font-family: url("{!$Resource.Oxygen}");
+    text-align: center;
+}
+
+.THIS .approve{
+    font-size: 20px;
+    font-family: url("{!$Resource.OpenSans300}");
+    color: #29d4b0;
+    padding-top: 4%;
+    text-align: center;
+    width: 70%;
+}
+
+.THIS .progress{
+    width: 70vw;
+    color: #29d4b0;
+    padding-bottom: 5rem;
+    
+}
+
+.THIS .baseprogressbar{
+    transition: width 0.5s;
+    transition-delay: 0.3s;
+}
+
+.THIS .slds-progress-bar__value_success{
+    background-color: #29d4b0;
+    transition: width 1.2s;
+    transition-delay: 0.2s;
+}
+
+.THIS .validateEmail{
+    font-family:url("{!$Resource.OpenSans}");
+    color:#FF0000;
+    font-size:20px;
+    font-weight: bold;
+    text-align: center;
+    margin-top: -1rem;
+}
+
+.THIS .validate2{
+    color:#29d4b0!important;
+    font-size:15px;
+    font-family:url("{!$Resource.OpenSans}");
+    font-weight: bold;
+}
+
+.THIS .input {
+    font: Open Sans;
+    width: 120%;
+    border-radius: 0 0 0 0 ;
+    all: unset;
+    border-bottom: 2px solid #FFFFFF;
+    background-color: transparent;
+    box-sizing: none;
+    color: #FFFFFF;
+    font-size: 16px;
+}
+
+.THIS .input:hover{
+    cursor: pointer;
+}
+
+.THIS .countrypick{
+    padding-top: 1rem;
+    background-size: 100% 100%;
+}
+
+.THIS .slds-progress-bar_small{
+    height:.4rem;
+}
+
+.THIS .nextbtn:disabled{
+    background-color: #848482;
+    color: #fff;
+    border-color: #848482;
+}
+
+.THIS .nextbtn{
+    
+    --sds-c-button-brand-color-background-hover: #29D4B0;
+        --sds-c-button-brand-color-border-hover: #29D4B0;
+        --sds-c-button-brand-color-background-active : #29d4b0;
+        --sds-c-button-brand-color-border-active : #29d4b0;
+        
+        
+        color: #29D4B0;
+        height: 38px;
+        background-color: transparent;
+        border:2px solid #29D4B0;
+        padding: 0.3rem 0.8rem 0.3rem 0.8rem;
+        text-align: center;
+        vertical-align: middle;
+        /*justify-content: center;*/
+        background-image: none;
+        margin-right: 1rem;
+        border-top: 1px solid #29D4B0;
+        border-left: 1px solid #29D4B0;
+        border-radius: 2vw 2vw 2vw 2vw;
+        
+    }
+    
+    .THIS .progresswidth{
+        width: 45%;
+    }
+    
+    .THIS .bothbutton{
+        position: fixed;
+        left: 36.5%; 
+        bottom: 20%;
+    }
+    
+    @media only screen and (min-width: 900px) {
+        .THIS .bothbutton {
+            left: 43%; 
+            bottom: 30%;
+        }
+    }
+    
+    .THIS .singlenext{
+        position: fixed;
+        left: 43%;
+        bottom: 20%;
+    }
+    
+    @media only screen and (min-width: 900px) {
+        .THIS .singlenext {
+            left: 47%; 
+            bottom: 30%;
+        }
+    }
+    .THIS .singlenextphone{
+        position: fixed;
+        left: 47%;
+        bottom: 50%;
+    }
+    
+   
+    
+    .THIS .bothbuttonphone{
+        position: fixed;
+        left: 42%; 
+        bottom: 50%;
+        
+    }
+    
+    .THIS .quest{
+        color: #FFFFFF;
+        font-size: 5vw;
+        font-family: url("{!$Resource.Oxygen}");
+    }
+    
+    .THIS ::placeholder{
+        font-size: 14px;
+    }
+    .THIS .slds-spinner__dot-b:before{
+        backgound-color: #29d4b0;
+    }
+    .THIS.exampleHolder{
+        position: relative;
+        display: inline-block;
+        width: 80px;
+        height: 80px;
+    }

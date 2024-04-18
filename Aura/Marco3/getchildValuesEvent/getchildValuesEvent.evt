@@ -1,0 +1,5 @@
+<aura:event type="COMPONENT" description="Fired when a Contact search is completed">
+    <aura:attribute name="singleselectvalue" type="String" default="" />
+    <aura:attribute name="multiselectvalue" type="LIST" default="" />
+    <aura:attribute name="picklisttype" type="String" default="" />
+</aura:event>

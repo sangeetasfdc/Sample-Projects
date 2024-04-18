@@ -1,0 +1,560 @@
+<aura:component controller="ApplicationPageController" implements="forceCommunity:availableForAllPageTypes,force:hasRecordId,force:appHostable">
+    
+    <lightning:spinner aura:id="mySpinner" alternativeText="Processing.." title="" variant="brand" size="large" class="slds-hide"/>
+    
+    <!--********************* Handlers ************************-->
+    <aura:handler name="init" value="{!this}" action="{!c.doInit}"/>
+    <aura:handler name="cmpEventSingle" event="c:getchildValuesEvent" action="{!c.assignselectedvalues}"/>
+    <aura:handler name="summaryEventQuestion" event="c:SummaryEvent" action="{!c.displatQuestionToEdit}"/>
+    
+    <!--************************ Attributes ************************** -->
+    <aura:attribute name="recordId" type="String"/>  
+    <aura:attribute name="ApplicationPageWrapper" type="ApplicationPageWrapper"/>
+    <aura:attribute name="displayedSection" type="String" default=""/> 
+    <aura:attribute name="showpaca" type="boolean" default=""/> 
+    <aura:attribute name="showpo" type="boolean" default=""/> 
+    <aura:attribute name="ageingreportValue" type="String" default=""/> 
+    <aura:attribute name="showSummaryButton" type="boolean" default="false"/> 
+    <aura:attribute name="gotosummary" type="boolean" default="false"/> 
+    <aura:attribute name="test" type="boolean" default="false"/> 
+    
+    <!--************************ Manual Data table Attributes ************************-->
+    <aura:attribute name="manualrecordList" type="List"/>
+    <aura:attribute name="appData" type="Application__c"/>
+    <aura:attribute name="questionAnswer" type="List" default='[]'/> 
+    
+    <aura:attribute name="processedrecordList" type="List"/>
+    <aura:attribute name="showProcessedList" type="boolean"/>
+    
+    
+    <!--******************* Collection attributes *********************-->
+    <aura:attribute name="debtproviderMap" type="Map"/>
+    <aura:attribute name="insuranceMap" type="Map"/>
+    <aura:attribute name="businessseasonalityMap" type="Map"/>
+    <aura:attribute name="qualitychecksList" type="List"/>
+    <aura:attribute name="progressbillingMap" type="Map"/>
+    <aura:attribute name="installmentbillingMap" type="Map"/>
+    <aura:attribute name="twelvemonthsalesList" type="List"/>                                                        
+    <aura:attribute name="pacaMap" type="Map"/>
+    <aura:attribute name="cancellablepoMap" type="Map"/>
+    <aura:attribute name="allowaccountingMap" type="Map"/>
+    <aura:attribute name="ageingreportList" type="List" default="[{'label':'Utilize Scanning Tool','value':'Utilize Scanning Tool'},
+                                                                 {'label':'Upload marco Template','value':'Upload marco Template'},
+                                                                 {'label':'Manually','value':'Manually'}]"/>
+    
+    <!--*************************** File upload attributes ********************************-->
+    <aura:attribute name="parentId" type="Id" default="" />
+    <aura:attribute name="fileName" type="String" default="No File Selected.." />    
+    
+    <aura:attribute name="spinner" type="boolean"/>
+    
+    <aura:if isTrue="{!v.spinner}">
+        <div aura:id="spinnerId" style="height:94%" class="slds-spinner_container spinnerback">
+            <div class="slds-spinner--brand  slds-spinner slds-spinner--large slds-is-relative" role="alert">
+                <span class="slds-assistive-text">Loading...</span>
+                <div class="slds-spinner__dot-a"></div>
+                <div class="slds-spinner__dot-b"></div>
+            </div>
+        </div>
+    </aura:if>
+    
+    <div class="ApplicationPage">
+        
+        <aura:if isTrue="{!!v.ApplicationPageWrapper.applicationSubmitted}">
+            
+            <!--********************************* Debt provider ************************************-->
+            <aura:if isTrue="{!v.displayedSection == 'debtprovider'}">
+                <div class="QuestionOuter">
+                    <div class="questionTitle slds-align_absolute-center">
+                        is there a debt provider/ factor / PO facility currently in place?
+                    </div>
+                    <div class="radio-style slds-align_absolute-center">
+                        <div class="form-group slds-align_absolute-center">
+                            <lightning:radioGroup aura:id="debtproviderRadio"
+                                                  name="radioGroup"
+                                                  label=""
+                                                  required="false"
+                                                  onchange="{!c.HandleNavigationButtons}"
+                                                  options="{!v.debtproviderMap}"
+                                                  value="{!v.ApplicationPageWrapper.Debt_Factor_PO_provider_in_place}"
+                                                  type="radio"/>
+                        </div>
+                    </div>
+                </div>
+            </aura:if>
+            
+            
+            <!--******************************* Insurance Policy***********************************-->
+            <aura:if isTrue="{!v.displayedSection == 'insurance'}">
+                <div class="QuestionOuter">
+                    <div class="questionTitle slds-align_absolute-center">
+                        does your company operate with trade insurance?
+                    </div>
+                    <div class="radio-style slds-align_absolute-center">
+                        <div class="form-group slds-align_absolute-center">
+                            <lightning:radioGroup aura:id="insuranceRadio"
+                                                  name="radioGroup"
+                                                  label=""
+                                                  required="false"
+                                                  onchange="{!c.HandleNavigationButtons}"
+                                                  options="{!v.insuranceMap}"
+                                                  value="{!v.ApplicationPageWrapper.Company_operate_w_trade_insur_policy}"
+                                                  type="radio"/>
+                        </div>
+                    </div>
+                </div>
+            </aura:if>
+            
+            
+            <!--****************************** Insurance Provider Name ********************************-->
+            <div class="{!if(v.displayedSection == 'insurancename','slds-show','slds-hide')}">
+                <div class="QuestionOuter">
+                    <div class="questionTitle slds-align_absolute-center">
+                        please enter name of the insurance provider
+                    </div>
+                    <div style="padding-top: 7%;" class="form-group slds-align_absolute-center">
+                        <input style="width:19rem" type="text" id="insuranceNameId" value="{!v.ApplicationPageWrapper.Name_of_Insurance_Provider}" class="input" placeholder="" onkeyup="{!c.HandleNavigationButtons}"/>
+                    </div>
+                </div>
+            </div>
+            
+            
+            <!--*********************************** Business Seasonality ***************************************-->
+            <aura:if isTrue="{!v.displayedSection == 'businessseasonality'}">
+                <div class="QuestionOuter">
+                    <div class="questionTitle slds-align_absolute-center">
+                        is there a seasonality to your business?
+                    </div>
+                    <div class="radio-style slds-align_absolute-center">
+                        <div class="form-group slds-align_absolute-center">
+                            <lightning:radioGroup aura:id="businessseasonalityRadio"
+                                                  name="radioGroup"
+                                                  label=""
+                                                  required="false"
+                                                  onchange="{!c.HandleNavigationButtons}"
+                                                  options="{!v.businessseasonalityMap}"
+                                                  value="{!v.ApplicationPageWrapper.Seasonality_To_The_Business}"
+                                                  type="radio"/>
+                        </div>
+                    </div>
+                </div>
+            </aura:if>
+            
+            
+            <!--*********************************** Quality checks ***************************************-->
+            <aura:if isTrue="{!v.displayedSection == 'qualitychecks'}">
+                <div class="QuestionOuter">
+                    <div class="questionTitle slds-align_absolute-center">
+                        are there quality checks in place?
+                    </div>
+                    <div style="padding-top: 6%;" class="slds-align_absolute-center">
+                        <c:PicklistComponent selectedvalue="{!v.ApplicationPageWrapper.Quality_Checks_in_Place}" picklisttype="qualitychecks" aura:id="qualitychecksPicklist" options="{!v.qualitychecksList}" multiSelect="false" label=""/>
+                    </div>  
+                </div>
+            </aura:if>
+            
+            
+            <!--*********************************** Progress Billing ***************************************-->
+            <aura:if isTrue="{!v.displayedSection == 'progressbilling'}">
+                <div class="QuestionOuter">
+                    <div class="questionTitle slds-align_absolute-center">
+                        does your company practice progress billings?
+                    </div>
+                    <div class="radio-style slds-align_absolute-center">
+                        <div class="form-group slds-align_absolute-center">
+                            <!--Lightning radio group component-->
+                            <lightning:radioGroup aura:id="progressbillingRadio"
+                                                  name="radioGroup"
+                                                  label=""
+                                                  required="false"
+                                                  onchange="{!c.HandleNavigationButtons}"
+                                                  options="{!v.progressbillingMap}"
+                                                  value="{!v.ApplicationPageWrapper.Company_practice_Progress_Billings}"
+                                                  type="radio"/>
+                        </div>
+                    </div>
+                </div>
+            </aura:if>
+            
+            
+            <!--**************************** Installments Billings ********************************-->
+            <aura:if isTrue="{!v.displayedSection == 'installmentbilling'}">
+                <div class="QuestionOuter">
+                    <div class="questionTitle slds-align_absolute-center">
+                        does your company practice installments billings?
+                    </div>
+                    <!--Radio Buttons-->  
+                    <div class="radio-style slds-align_absolute-center">
+                        <div class="form-group slds-align_absolute-center">
+                            <!--Lightning radio group component-->
+                            <lightning:radioGroup aura:id="installmentbillingRadio"
+                                                  name="radioGroup"
+                                                  label=""
+                                                  required="false"
+                                                  onchange="{!c.HandleNavigationButtons}"
+                                                  options="{!v.installmentbillingMap}"
+                                                  value="{!v.ApplicationPageWrapper.Company_practice_Installments_Billings}"
+                                                  type="radio"/>
+                        </div>
+                    </div>
+                </div>
+            </aura:if>
+            
+            
+            <!--****************************** Last 12 months Sales ******************************-->
+            <aura:if isTrue="{!v.displayedSection == 'twelvemonthsale'}">
+                <div class="QuestionOuter">
+                    <div class="questionTitle slds-align_absolute-center">
+                        sales last 12 months (USD)
+                    </div>
+                    <div style="padding-top: 6%;" class="slds-align_absolute-center">
+                        <c:PicklistComponent selectedvalue="{!v.ApplicationPageWrapper.Sales_Last_12_Months_USD}" picklisttype="salesamount" aura:id="twelvemonthsalesPicklist" options="{!v.twelvemonthsalesList}" multiSelect="false" label=""/>
+                    </div>  
+                </div>
+            </aura:if>
+            
+            
+            <!--********************************* PACA ****************************************-->
+            <aura:if isTrue="{!v.displayedSection == 'subjecttopaca'}">
+                <div class="QuestionOuter">
+                    <div class="questionTitle slds-align_absolute-center">
+                        are you subject to PACA?
+                    </div>
+                    <div class="radio-style slds-align_absolute-center">
+                        <div class="form-group slds-align_absolute-center">
+                            <lightning:radioGroup aura:id="pacaRadio"
+                                                  name="radioGroup"
+                                                  label=""
+                                                  required="false"
+                                                  onchange="{!c.HandleNavigationButtons}"
+                                                  options="{!v.pacaMap}"
+                                                  value="{!v.ApplicationPageWrapper.Is_There_Debt_Pro}"
+                                                  type="radio"/>
+                        </div>
+                    </div>
+                </div>
+            </aura:if>
+            
+            
+            <!--******************************** Cancellable PO ***********************************-->
+            <aura:if isTrue="{!v.displayedSection == 'cancellablePO'}">
+                <div class="QuestionOuter">
+                    <div class="questionTitle slds-align_absolute-center">
+                        is your purchase order(PO) cancellable?
+                    </div>
+                    <div class="radio-style slds-align_absolute-center">
+                        <div class="form-group slds-align_absolute-center">
+                            <lightning:radioGroup aura:id="pacaRadio"
+                                                  name="radioGroup"
+                                                  label=""
+                                                  required="false"
+                                                  onchange="{!c.HandleNavigationButtons}"
+                                                  options="{!v.cancellablepoMap}"
+                                                  value="{!v.ApplicationPageWrapper.Purchase_Order_PO_Cancellable}"
+                                                  type="radio"/>
+                        </div>
+                    </div>
+                </div>
+            </aura:if>
+            
+            
+            <!--******************************* Allow Accounting ***********************************-->
+            <aura:if isTrue="{!v.displayedSection == 'allowaccounting'}">
+                <div class="QuestionOuter">
+                    <div class="questionTitle slds-align_absolute-center">
+                        would you allow us to plug in your Quickbooks/Accounting platforms?
+                    </div>
+                    <div class="radio-style slds-align_absolute-center">
+                        <div class="form-group slds-align_absolute-center">
+                            <lightning:radioGroup aura:id="pacaRadio"
+                                                  name="radioGroup"
+                                                  label=""
+                                                  required="false"
+                                                  onchange="{!c.HandleNavigationButtons}"
+                                                  options="{!v.allowaccountingMap}"
+                                                  value="{!v.ApplicationPageWrapper.Allow_Us_To_Plug_Into_Acctng_platform}"
+                                                  type="radio"/>
+                        </div>
+                    </div>
+                </div>
+            </aura:if>
+            
+            
+            <!--******************************* Downloas NDA ***********************************-->
+            <aura:if isTrue="{!v.displayedSection == 'downloadnda'}">
+                <div class="QuestionOuter">
+                    <div style="padding-top:3%" class="slds-align_absolute-center">
+                        <lightning:button aura:id="DownloadButton"  label="Download NDA" iconName="utility:download" onclick="{!c.downloadnda}" class="button-style" variant="Neutral"/>
+                    </div>   
+                    <div style="padding-top:2%" class="slds-align_absolute-center">      
+                        <lightning:fileUpload label="Upload Executed NDA" multiple="true" accept=".doc, .pdf" recordId="{!v.recordId}" aura:id="multifileUpload" onuploadfinished="{!c.handleUploadFinished}" />                
+                    </div>
+                </div>
+            </aura:if>
+            
+            
+            <!--******************************* List of customers  **********************************-->
+            <aura:if isTrue="{!v.displayedSection == 'listofcustomers'}">
+                <div class="QuestionOuter">
+                    <div class="questionTitle slds-align_absolute-center">
+                        list of customers (debtors)
+                    </div>
+                    <div style="padding-top:3%" class="slds-align_absolute-center">
+                        <!--  <lightning:input type="file" accept=".pdf" aura:id="listofcustomersfiles" label="Please upload sample invoices" variant="label-inline" name="file" onchange="{! c.handlelistofcustomersFiles }"/> -->     
+                        <lightning:fileUpload label="Please upload sample invoices" multiple="true" accept=".pdf" recordId="{!v.recordId}" aura:id="customerListId" onuploadfinished="{!c.handlelistofcustomersFiles}" />               
+                    </div>
+                    
+                    <aura:if isTrue="{!v.showProcessedList}">
+                        <div class="">
+                            <div style="padding-left:87%" class="slds-p-bottom_small">
+                                <lightning:button class="addbtn" variant="neutral" label="Submit" title="Brand action" onclick="{!c.exportToCsvDebtors}" />
+                                <lightning:button class="addbtn" label="Add row" iconName="utility:add" iconPosition="left" onclick="{!c.addRowDebtors}"/>
+                            </div>
+                            <div style="padding-right:3%; padding-left:3%;">
+                                <div style="height: 15.5rem;" class="container-fluid slds-scrollable_y">        
+                                    <table class="slds-table slds-table_bordered slds-table_cell-buffer"> 
+                                        <thead>
+                                            <tr class="slds-text-title_caps">
+                                                <th class="thbackground" scope="col">
+                                                    <div class="slds-truncate">#</div>
+                                                </th>
+                                                <th class="thbackground" scope="col">
+                                                    <div class="slds-truncate columnheader" title="Customer">Invoice No.</div>
+                                                </th>
+                                                <th class="thbackground" scope="col">
+                                                    <div class="slds-truncate columnheader" title="Total A/R">Issue Date</div>
+                                                </th>
+                                                <th class="thbackground" scope="col">
+                                                    <div class="slds-truncate columnheader" title="0-30 days">Currency</div>
+                                                </th>
+                                                <th class="thbackground" scope="col">
+                                                    <div class="slds-truncate columnheader" title="31-60 days">Invoice Total</div>
+                                                </th>
+                                                <th class="thbackground" scope="col">
+                                                    <div class="slds-truncate columnheader" title="61-90 days">Issuer</div>
+                                                </th>
+                                                <th class="thbackground" scope="col">
+                                                    <div class="slds-truncate columnheader" title="61-90 days">File link</div>
+                                                </th>
+                                            </tr>
+                                        </thead>   
+                                        <tbody>      
+                                            <aura:iteration items="{!v.processedrecordList}" var="mrec" indexVar="index">
+                                                <tr>
+                                                    <td> 
+                                                        {!index + 1}
+                                                    </td>
+                                                    <td>
+                                                        <lightning:input class="tableinput" name="invoicenumber" type="text" required="" maxlength="50" label="" value="{!mrec.Name}" />
+                                                    </td>
+                                                    <td>
+                                                        <lightning:input class="tableinput" name="issue_date" type="date"  maxlength="10" label="" value="{!mrec.issue_date__c }" />
+                                                    </td>
+                                                    <td>
+                                                        <lightning:input class="tableinput" name="invoice_currency" type="text" maxlength="10" label="" value="{!mrec.invoice_currency__c }" />
+                                                    </td>
+                                                    <td>
+                                                        <lightning:input class="tableinput" name="invoice_total" type="number" formatter="currency" step="0.01" maxlength="10" label="" value="{!mrec.invoice_total__c }" />
+                                                    </td>
+                                                    <td>
+                                                        <lightning:input class="tableinput" name="issuer" type="text" maxlength="10" label="" value="{!mrec.issuer__c}" />
+                                                    </td>
+                                                    <td>
+                                                        <lightning:formattedUrl value="{!mrec.documentId__c}" tooltip="" label="View" target="_blank" />
+                                                    </td> 
+                                                    <td>
+                                                        <a onclick="{!c.removeRowInvoice}" data-record="{!index}">
+                                                            <lightning:icon iconName="utility:delete" size="small" alternativeText="Delete"/>
+                                                            <span class="slds-assistive-text">Delete</span>
+                                                        </a>
+                                                    </td> 
+                                                </tr>
+                                            </aura:iteration>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </aura:if>
+                </div>
+            </aura:if>
+            
+            
+            <!--******************************** Thank You message ***********************************-->
+            <div class="{!if(v.displayedSection == 'thankyoumessage','slds-show','slds-hide')}">
+                <div style="font-size: 2rem;" class="slds-align_absolute-center question2">
+                    Thank you for your inquiry, our Business<br/>
+                    Development Team will contact you shortly.
+                </div>
+            </div>
+            
+            
+            <!--******************************** Ageing report ***********************************-->
+            <div class="{!if(v.displayedSection == 'ageingreport','slds-show','slds-hide')}">
+                <div class="QuestionOuter">
+                    <div class="questionTitle slds-align_absolute-center">
+                        How would you like to submit most recent A/R ageing report?
+                    </div>
+                    <div style="padding-top: 6%;" class="slds-align_absolute-center">
+                        <c:PicklistComponent picklisttype="ageingreport" aura:id="ageingreportPicklist" options="{!v.ageingreportList}" multiSelect="false" label=""/>
+                    </div>  
+                </div>
+            </div>
+            
+            
+            <!--******************************** Scanning Tool ***********************************-->
+            <aura:if isTrue="{!v.displayedSection == 'scanningtool'}">
+                <div class="QuestionOuter">
+                    <div class="questionTitle slds-align_absolute-center">
+                        Utilize Scanning Tool 
+                    </div>
+                    <div style="padding-top:3%" class="slds-align_absolute-center">
+                        <lightning:fileUpload label="Please upload most recent A/R Aging Report" multiple="true" accept=".pdf, .xlsx" recordId="{!v.recordId}" aura:id="scanningUploadId" onuploadfinished="{!c.handleUploadFinished}" />                
+                    </div>
+                </div>
+            </aura:if>
+            
+            
+            <!--******************************** marco Template ***********************************-->
+            <aura:if isTrue="{!v.displayedSection == 'macrotemplate'}">
+                <div class="QuestionOuter">
+                    <div style="padding-top:3%" class="slds-align_absolute-center">
+                        <lightning:button aura:id="DownloadmarcoButton"  label="Download marco Template" iconName="utility:download" onclick="{!c.downloadnda}" class="button-style" variant="Neutral"/>
+                    </div>   
+                    <div style="padding-top:2%" class="slds-align_absolute-center">      
+                        <lightning:fileUpload label="Please Upload marco Template" multiple="true" accept=".doc, .pdf, .csv" recordId="{!v.recordId}" aura:id="marcotemplateId" onuploadfinished="{!c.handleUploadFinished}" />                
+                    </div>
+                </div>
+            </aura:if>
+            
+            
+            <!--************************************ Manually isTrue="{!v.displayedSection == 'manually'}" *************************************-->
+            <aura:if isTrue="{!v.displayedSection == 'manually'}">
+                <div class="QuestionOuter">
+                    <div class="questionTitle slds-align_absolute-center">
+                        Please populate the potential factoring clients
+                    </div>
+                    <div style="padding-left:87%" class="slds-p-bottom_small">
+                        <lightning:button class="addbtn" variant="neutral" label="Submit" title="Brand action" onclick="{!c.exportToCsv}" />
+                        <lightning:button class="addbtn" label="Add row" iconName="utility:add" iconPosition="left" onclick="{!c.addRow}"/>
+                    </div>
+                    <div style="padding-right:3%; padding-left:3%;">
+                        <div style="height: 15.5rem;" class="container-fluid slds-scrollable_y">        
+                            <table class="slds-table slds-table_bordered slds-table_cell-buffer"> 
+                                <thead>
+                                    <tr class="slds-text-title_caps">
+                                        <th class="thbackground" scope="col">
+                                            <div class="slds-truncate">#</div>
+                                        </th>
+                                        <th class="thbackground" scope="col">
+                                            <div class="slds-truncate columnheader" title="Customer">Customer</div>
+                                        </th>
+                                        <th class="thbackground" scope="col">
+                                            <div class="slds-truncate columnheader" title="Total A/R">Total A/R</div>
+                                        </th>
+                                        <th class="thbackground" scope="col">
+                                            <div class="slds-truncate columnheader" title="0-30 days">0-30 days</div>
+                                        </th>
+                                        <th class="thbackground" scope="col">
+                                            <div class="slds-truncate columnheader" title="31-60 days">31-60 days</div>
+                                        </th>
+                                        <th class="thbackground" scope="col">
+                                            <div class="slds-truncate columnheader" title="61-90 days">61-90 days</div>
+                                        </th>
+                                        <th class="thbackground" scope="col">
+                                            <div class="slds-truncate columnheader" title="91-120 days">91-120 days</div>
+                                        </th>
+                                        <th class="thbackground" scope="col">
+                                            <div class="slds-truncate columnheader" title="120+ days">120+ days</div>
+                                        </th>
+                                        <th style="max-width: 2rem;" class="thbackground" scope="col">
+                                            <div class="slds-truncate columnheader" title="Action"></div>
+                                        </th>
+                                    </tr>
+                                </thead>   
+                                <tbody>      
+                                    <aura:iteration items="{!v.manualrecordList}" var="mrec" indexVar="index">
+                                        <tr>
+                                            <td> 
+                                                {!index + 1}
+                                            </td>
+                                            <td>
+                                                <lightning:input class="tableinput" name="customer" type="text" required="" maxlength="50" label="" value="{!mrec.customer}" />
+                                            </td>
+                                            <td>
+                                                <lightning:input class="tableinput" name="totalar" type="number"  maxlength="10" label="" value="{!mrec.Total_Ar}" />
+                                            </td>
+                                            <td>
+                                                <lightning:input class="tableinput" name="ar1" type="number" maxlength="10" label="" value="{!mrec.Ar0_30}" />
+                                            </td>
+                                            <td>
+                                                <lightning:input class="tableinput" name="ar2" type="number" maxlength="10" label="" value="{!mrec.Ar30_60}" />
+                                            </td>
+                                            <td>
+                                                <lightning:input class="tableinput" name="ar3" type="number" maxlength="10" label="" value="{!mrec.Ar60_90}" />
+                                            </td>
+                                            <td>
+                                                <lightning:input class="tableinput" name="ar4" type="number" maxlength="10" label="" value="{!mrec.Ar90_120}" />
+                                            </td>
+                                            <td>
+                                                <lightning:input class="tableinput" name="ar5" type="number" maxlength="10" label="" value="{!mrec.Ar120_Plus}" />
+                                            </td>     
+                                            <td>
+                                                <a onclick="{!c.removeRow}" data-record="{!index}">
+                                                    <lightning:icon iconName="utility:delete" size="small" alternativeText="Delete"/>
+                                                    <span class="slds-assistive-text">Delete</span>
+                                                </a>
+                                            </td> 
+                                        </tr>
+                                    </aura:iteration>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </aura:if>
+            
+            
+            <!--************************************ Navigation Buttons ***********************************-->
+            <aura:if isTrue="{!v.showSummaryButton == false}">
+                <aura:if isTrue="{!and(v.displayedSection != 'thankyoumessage',v.displayedSection != 'summary')}">
+                    <div class="{!if(v.displayedSection == 'debtprovider','singlenext','bothbutton')}">
+                        <div class="slds-align_absolute-center navigationButtons">   
+                            <aura:if isTrue="{!and(v.displayedSection != 'debtprovider',v.test == false)}">
+                                <lightning:button aura:id="PreviousButton"  label="Go Back" iconName="utility:chevronleft" onclick="{!c.previousQuestion}" class="nxt-btn button-style" variant="Neutral"/>
+                            </aura:if>
+                            &nbsp;&nbsp;
+                            <aura:if isTrue="{!!v.test}">
+                                <lightning:button aura:id="NextButton"  label="Next" iconPosition="right" iconName="utility:chevronright" onclick="{!c.nextQuestion}" class="nxt-btn button-style" variant="Neutral"/>
+                            </aura:if>
+                        </div>
+                    </div>
+                </aura:if>
+            </aura:if>
+            
+        </aura:if>
+        
+        
+        <!--******************************* Summary ***********************************-->
+        <aura:if isTrue="{!or(v.displayedSection == 'summary', v.ApplicationPageWrapper.applicationSubmitted)}">
+            <c:ApplicationSummary appid="{!v.recordId}" appSubmitted="{!v.ApplicationPageWrapper.applicationSubmitted}" questionAnswer="{!v.questionAnswer}" aura:id="summaryId" />
+        </aura:if>
+        
+        
+        <aura:if isTrue="{!v.showSummaryButton == true}">
+            <div class="slds-align_absolute-center navigationButtons">   
+                <lightning:button aura:id="summaryButton"  label="Go to Summary" iconName="utility:skip_forward" onclick="{!c.navigateToSummary}" class="nxt-btn button-style" variant="Neutral"/>
+            </div>
+        </aura:if>
+        
+        
+        <aura:if isTrue="{!or(v.gotosummary,v.displayedSection == 'thankyoumessage')}">
+            <div class="slds-align_absolute-center navigationButtons">   
+                <lightning:button aura:id="summaryButton"  label="Go to Summary" iconName="utility:chevronright" onclick="{!c.navigateToSummary2}" class="nxt-btn button-style" variant="Neutral"/>
+            </div>
+        </aura:if>
+        
+        
+    </div>    
+    
+</aura:component>

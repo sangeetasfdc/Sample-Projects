@@ -1,0 +1,869 @@
+<aura:component controller="Controller" implements="flexipage:availableForRecordHome,force:hasRecordId" access="global" >
+    <aura:attribute name="isMotiveOpen" type="boolean" default="false"/>
+    <aura:attribute name="isRegulatoryFitOpen" type="boolean" default="false"/>
+    <aura:attribute name="isAbstractnessOpen" type="boolean" default="false"/>
+    <aura:attribute name="isEmotionalityOpen" type="boolean" default="false"/>
+    <aura:attribute name="recordId" type="String"/>
+    <aura:attribute name="detailanlaysis" type="object"/>
+    <aura:attribute name="quality" type="Integer" default="0"/>
+     <aura:attribute name="trend" type="String"/>
+    <aura:attribute name="wordCount" type="Integer"/>
+    <aura:attribute name="profilenotfound" type="String"/>
+    <aura:attribute name="tag" type="String"/>
+    <aura:attribute name="progress" type="String"/>
+     <aura:attribute name="X100worterelationshipquality" type="String"/>
+     <aura:attribute name="X100worterelationshiptendency" type="String"/>
+    <aura:attribute name="X100wortetextAppears" type="String"/>
+     <aura:attribute name="X100wortehintsforspeech" type="String"/>
+    
+     <aura:attribute name="X100wortemore" type="String"/>
+    <aura:attribute name="X100worteless" type="String"/>
+     <aura:attribute name="X100wortemotiveanalysis" type="String"/>
+    
+    <aura:attribute name="X100worteabstractness" type="String"/>
+    
+    <aura:attribute name="X100worteattention" type="String"/>
+    <aura:attribute name="X100worteneeds" type="String"/>
+     <aura:attribute name="X100worteprocessing" type="String"/>
+    
+    <aura:attribute name="X100worteregulatoryfit" type="String"/>
+    
+    <aura:attribute name="X100wortehintforspeechheadline1" type="String"/>
+    <aura:attribute name="X100wortehintforspeechheadline2" type="String"/>
+     <aura:attribute name="X100wortehintforspeechheadline3" type="String"/>
+   
+     <aura:attribute name="X100worteemotionality" type="String"/>
+    <aura:attribute name="X100wortewordsAnalyzedForProfile" type="String"/>
+    
+     <aura:attribute name="X100worteanswer" type="String"/>	
+     
+      <aura:attribute name="X100wortewordcount" type="String"/>
+    <aura:attribute name="X100wortewordcount2" type="String"/>
+    
+     
+    
+    <aura:attribute name="Hidesection" type="boolean" default="false"/>
+    <aura:attribute name="Hidesection2" type="boolean" default="false"/>
+    <!--aura handler with waiting and donewaiting events--> 
+    <aura:handler event="aura:waiting" action="{!c.showSpinner}"/>
+    <aura:handler event="aura:doneWaiting" action="{!c.hideSpinner}"/>
+  	<!--component attributes -->
+    <aura:attribute name="spinner" type="boolean" default="FALSE"/>
+    <aura:handler name="init" value="{! this }" action="{! c.doinit }"/>
+	<div class="slds-card">
+        <!--slds container-->
+                <div class="slds-box slds-theme_default">
+                    <div class="slds-p-left_large slds-p-right_large slds-p-top_large slds-p-bottom_large">
+                        
+                    <!--blue header starts-->
+                        <div class="slds-box_blue">
+                            <div class="slds-p-left_medium slds-p-right_medium slds-p-top_xx-small slds-p-bottom_medium">
+                                <table>
+                                    <tbody>
+                                        <tr>
+                                            <!--Header Logo-->
+                                            <td width="30" valign="top">
+                                                <div class="slds-p-top_x-small">
+                                                    <img src="{!$Resource.logopart}" style="height:40px;width:40px;" valign="top"/>
+                                                </div>
+                                            </td>
+                                            <!--Header Text-->
+                                            <td width="120">
+                                                <div class="slds-p-top_large">
+                                                    <!--loading spinner start-->
+                                                    <aura:if isTrue="{!v.spinner}">
+                                                        <div aura:id="spinnerId" class="slds-spinner_container">
+                                                            <div class="slds-spinner--brand  slds-spinner slds-spinner--large slds-is-relative" role="alert">
+                                                                <span class="slds-assistive-text">Loading...</span>
+                                                                <div class="slds-spinner__dot-a"></div>
+                                                                <div class="slds-spinner__dot-b"></div>
+                                                            </div>
+                                                        </div>
+                                                    </aura:if>
+                                                    <!-- Loading spinner end-->   
+                                                    <span style="font-size:14px;color:#7BA4DB;text-align:left">{!v.detailanlaysis.firstname} {!v.detailanlaysis.lastname} {!v.profilenotfound}</span>
+                                                    <br/>
+                                                    <span style="font-size:12px;color:#ffffff;">{!v.detailanlaysis.email}<br/><b>Tags: </b> {!v.tag.accountname.name} &nbsp;{!v.tag.companyname.name}&nbsp;{!v.tag.title.name}&nbsp;{!v.tag.department.name} </span><br/>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                        <div class="jss317"/>
+                        <!--blue header ends-->
+                        <!--body starts-->
+                        
+                        <aura:if isTrue="{!v.Hidesection}">
+                        <div>
+                        <table class="box">
+                            <tbody>
+                                <tr>
+                                    <td>
+                                        <!--First Section-->
+                                      
+                                        <table>
+                                            <tbody>
+                                                <tr>
+                                                    <!--First row-->
+                                                    
+                                                    <td class="shaded-background" width="38">
+                                                        <div class="slds-align_absolute-center"><br/>
+                                                            <div class="slds-p-top_large">
+                                                                <img src="{!$Resource.balanceicon}" style="height:30px;width:30px;" valign="top"/>
+                                                                <br/>
+                                                            </div>
+                                                        </div>
+                                                    </td>
+                                                    <td width="100">
+                                                        <div class="slds-p-top_large">
+                                                            <div class="body">
+                                                                <div class="slds-p-left_medium">{!v.detailanlaysis.assessment.needs.value}</div>
+                                                            </div>
+                                                        </div>
+                                                    </td>
+                                                    
+                                                </tr>
+                                                <!--Second row-->
+                                                <tr>
+                                                    <td class="shaded-background" width="35.5">
+                                                        <div class="slds-p-top_medium slds-p-bottom_small">
+                                                            <div class="slds-align_absolute-center">
+                                                                <img src="{!$Resource.riskicon}" style="height:30px;width:30px;" valign="top"/>
+                                                            </div>
+                                                        </div>
+                                                    </td>
+                                                    <td width="135">
+                                                        <div class="body">
+                                                            <div class="slds-p-left_medium">
+                                                                {!v.detailanlaysis.assessment.processing.value}
+                                                            </div>
+                                                        </div>
+                                                    </td>
+                                                    <td width="5">
+                                                        <div class="link">
+                                                            <div class="clearfix">
+                                                                <div class="slds-float_right">
+                                                                    <div class="slds-p-right_xx-small">
+                                                                        <lightning:navigation aura:id="navService"/>
+                                                                        <a aura:id="label" onclick="{!c.ProfileComp}"> >{!v.X100wortemore}...</a>
+                                                                        <a aura:id="label2" onclick="{!c.ProfileComp}" class="toggle">>{!v.X100worteless}...</a>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                        <!--separator-->
+                                        <div class="slds-grid slds-gutters">
+                                            <div class="slds-col slds-size_4-of-4">
+                                                <div class="shaded-background" style="border-top:2px dashed black;"></div> 
+                                            </div>
+                                            <!--div class="slds-col slds-size_3-of-4">
+                                                <div style="border-top:2px dashed black;padding-left:0px;"></div>
+                                            </div-->
+                                        </div>
+                                        
+                                       <!--First internal Component starts-->
+                                        <div aura:id="ProfileComp" class="slds-card toggle">
+                                            <div class="slds-box slds-p-left_large slds-p-top_medium">
+                                                <table width="300">
+                                                    <tbody>
+                                                        <tr>
+                                                            <table>
+                                                                <tbody>
+                                                                    <tr>
+                                                                        <td class="header" width="200">
+                                                                            <div class="slds-p-bottom_medium">
+                                                                             <!--   Motivation analysis-->
+                                                                                {!v.X100wortemotiveanalysis}
+                                                                            </div>
+                                                                        </td>
+                                                                        <td class="link" widh="20" align="right">
+                                                                            <div class="clearfix">
+                                                                                <div class="slds-float_right">
+                                                                                    <a onclick="{!c.ProfileComp}">>	{!v.X100worteless}...</a>
+                                                                                </div>
+                                                                            </div>
+                                                                        </td>
+                                                                    </tr>
+                                                                </tbody>
+                                                            </table>
+                                                        </tr>
+                                                    </tbody>
+                                                </table>
+                                                <div class="slds-box_grey">
+                                                    <div class="slds-p-top_medium slds-p-left_medium slds-p-right_medium slds-p-bottom_medium">
+                                                        <p class="para slds-p-bottom_medium">
+                                                            {!v.detailanlaysis.assessment.instructions.type}
+                                                        </p>
+                                                        <div class="slds-box_blue">
+                                                            <div class="slds-p-right_small slds-p-top_xx-small slds-m-bottom_xx-small">
+                                                                <div class="slds-align_absolute-center">
+                                                                    <div class="tablehead">
+                                                                     <!--   Needs-->
+                                                                         {!v.X100worteneeds}
+                                                                        
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                            <div class="slds-box_sblue">
+                                                                <table>
+                                                                    <tbody>
+                                                                        <tr>
+                                                                            <td width="30">
+                                                                                <div class="slds-p-right_small slds-p-top_xx-small slds-m-bottom_xx-small">
+                                                                                    <div class="tablehead">
+                                                                                        <div class="clearfix">
+                                                                                            <div class="slds-float_right">
+                                                                                               <!-- Motive-->
+                                                                                                {!v.X100worteneeds}
+                                                                                            </div>
+                                                                                        </div>
+                                                                                    </div>
+                                                                                </div>
+                                                                            </td>
+                                                                            <td width="42">
+                                                                                <div class="clearfix">
+                                                                                    <div class="slds-m-around_small">
+                                                                                        <div class="slds-float_right">
+                                                                                            <div onclick="{!c.MotiveInfo}">
+                                                                                                <img src="{!$Resource.info}" style="height:20px;width:20px;"/>
+                                                                                            </div>
+                                                                                            <!--Use aura:if tag to display/hide popup based on isModalOpen value-->
+                                                                                            <aura:if isTrue="{!v.isMotiveOpen}">
+                                                                                                <!-- Modal/Popup Box starts here-->
+                                                                                                <section role="dialog" tabindex="-1" aria-labelledby="modal-heading-01" aria-modal="true" aria-describedby="modal-content-id-1" class="slds-modal slds-fade-in-open">
+                                                                                                    <div class="slds-modal__container">
+                                                                                                        <!-- Modal/Popup Box Header Starts here-->
+                                                                                                        <header class="slds-modal__header">
+                                                                                                            <div class="slds-clearfix">
+                                                                                                                <div class="slds-float_left">
+                                                                                                                    <h2 id="modal-heading-01" class="slds-text-heading_medium slds-hyphenate"><!--Motive-->{!v.X100worteneeds}</h2>
+                                                                                                                </div>
+                                                                                                                <div class="slds-float_right">
+                                                                                                                    <lightning:buttonIcon iconName="utility:close"
+                                                                                                                                          onclick="{!c.closeMotiveInfo }"
+                                                                                                                                          alternativeText="close"
+                                                                                                                                          variant="bare-inverse"/>
+                                                                                                                </div>
+                                                                                                            </div>
+                                                                                                        </header>
+                                                                                                        <!--Modal/Popup Box Body Starts here-->
+                                                                                                        <div class="slds-modal__content slds-p-around_medium" id="modal-content-id-1">
+                                                                                                            <p>{!v.detailanlaysis.assessment.needs.categories[0].info}</p>
+                                                                                                        </div>
+                                                                                                    </div>
+                                                                                                </section>
+                                                                                                <div class="slds-backdrop slds-backdrop_open"></div>
+                                                                                            </aura:if>
+                                                                                        </div>
+                                                                                    </div>
+                                                                                </div>
+                                                                            </td>
+                                                                        </tr>
+                                                                    </tbody>
+                                                                </table>
+                                                            </div>
+                                                        </div>
+                                                        <div class="slds-box_normal slds-theme_default">
+                                                            <div class="slds-p-top_small slds-p-left_xx-small slds-p-right_xx-small slds-p-bottom_small">
+                                                                <table>
+                                                                    <tbody>
+                                                                        <tr>
+                                                                            <td width="80">
+                                                                                <div class="column">
+                                                                                    <div class="slds-align_absolute-center">
+                                                                                        {!v.detailanlaysis.assessment.needs.categories[0].composition[0].name}
+                                                                                    </div>
+                                                                                </div>
+                                                                            </td>
+                                                                            <td width="10">
+                                                                                <div class="slds-align_absolute-center">
+                                                                                <span style="font-size:16px;">|</span>
+                                                                            </div>
+                                                                        </td>
+                                                                        <td width="80">
+                                                                            <div class="column">
+                                                                                <div class="slds-align_absoute-center">
+                                                                                    {!v.detailanlaysis.assessment.needs.categories[0].composition[1].name}
+                                                                                </div>
+                                                                            </div>
+                                                                        </td>
+                                                                            <td width="10">
+                                                                                <div class="slds-align_absolute-center">
+                                                                                    <span style="font-size:16px;">|</span>
+                                                                                </div>
+                                                                            </td>
+                                                                            <td width="80">
+                                                                                <div class="column">
+                                                                                    <div class="slds-align_absolute-center">
+                                                                                        {!v.detailanlaysis.assessment.needs.categories[0].composition[2].name}
+                                                                                    </div>
+                                                                                </div>
+                                                                            </td>
+                                                                        </tr>
+                                                                    </tbody>
+                                                                </table>
+                                                            </div>
+                                                        </div>
+                                                        <div class="heading">
+                                                            <div class="slds-p-top_large slds-p-bottom_large">
+                                                                <div class="slds-align_absolute-center">
+                                                                    {!v.detailanlaysis.assessment.needs.value}
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="slds-box_blue">
+                                                            <div class="slds-p-right_small slds-p-top_xx-small slds-m-bottom_xx-small">
+                                                                <div class="slds-align_absolute-center">
+                                                                    <div class="tablehead">
+                                                                 {!v.X100worteattention} <!--Attention--> &amp; <!--Processing--> {!v.X100worteprocessing}
+                                      
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                            <div class="slds-box_sblue">
+                                                                <table>
+                                                                    <tbody>
+                                                                        <tr>
+                                                                            <td width="30">
+                                                                                <div class="slds-p-right_small slds-p-top_xx-small slds-m-bottom_xx-small">
+                                                                                    <div class="tablehead">
+                                                                                        <div class="clearfix">
+                                                                                            <div class="slds-float_right">
+                                                                                               <!-- Regulatory Fit-->
+                                                                                               {!v.X100worteregulatoryfit}
+                                                                                            </div>
+                                                                                        </div>
+                                                                                    </div>
+                                                                                </div>
+                                                                            </td>
+                                                                            <td width="42">
+                                                                                <div class="clearfix">
+                                                                                    <div class="slds-m-around_small">
+                                                                                        <div class="slds-float_right">
+                                                                                            <div onclick="{!c.RegulatoryFitInfo}">
+                                                                                                <img src="{!$Resource.info}" style="height:20px;width:20px;"/>
+                                                                                            </div>
+                                                                                            <!--Use aura:if tag to display/hide popup based on isModalOpen value-->
+                                                                                            <aura:if isTrue="{!v.isRegulatoryFitOpen}">
+                                                                                                <!-- Modal/Popup Box starts here-->
+                                                                                                <section role="dialog" tabindex="-1" aria-labelledby="modal-heading-01" aria-modal="true" aria-describedby="modal-content-id-1" class="slds-modal slds-fade-in-open">
+                                                                                                    <div class="slds-modal__container">
+                                                                                                        <!-- Modal/Popup Box Header Starts here-->
+                                                                                                        <header class="slds-modal__header">
+                                                                                                            <div class="slds-clearfix">
+                                                                                                                <div class="slds-float_left">
+                                                                                                                    <h2 id="modal-heading-01" class="slds-text-heading_medium slds-hyphenate">{!v.X100worteregulatoryfit}</h2>
+                                                                                                                </div>
+                                                                                                                <div class="slds-float_right">
+                                                                                                                    <lightning:buttonIcon iconName="utility:close"
+                                                                                                                                          onclick="{!c.closeRegulatoryFitInfo }"
+                                                                                                                                          alternativeText="close"
+                                                                                                                                          variant="bare-inverse"/>
+                                                                                                                </div>
+                                                                                                            </div>
+                                                                                                        </header>
+                                                                                                        <!--Modal/Popup Box Body Starts here-->
+                                                                                                        <div class="slds-modal__content slds-p-around_medium" id="modal-content-id-1">
+                                                                                                            <p>{!v.detailanlaysis.assessment.needs.categories[0].info}</p>
+                                                                                                        </div>
+                                                                                                    </div>
+                                                                                                </section>
+                                                                                                <div class="slds-backdrop slds-backdrop_open"></div>
+                                                                                            </aura:if>
+                                                                                        </div>
+                                                                                    </div>
+                                                                                </div>
+                                                                            </td>
+                                                                        </tr>
+                                                                    </tbody>
+                                                                </table>
+                                                            </div>
+                                                            <div class="slds-box_normal slds-theme_default">
+                                                                <div class="slds-p-top_small slds-p-left_small slds-p-right_small slds-p-bottom_small">
+                                                                    <table>
+                                                                        <tbody>
+                                                                            <tr>
+                                                                                <td width="80">
+                                                                                    <div class="column">
+                                                                                        <div class="slds-align_absolute-center">
+                                                                                            {!v.detailanlaysis.assessment.processing.categories[0].composition[0].name}
+                                                                                        </div>
+                                                                                    </div>
+                                                                                </td>
+                                                                                <td width="50">
+                                                                                    <div class="slds-align_absolute-center">
+                                                                                        <span style="font-size:16px;">|</span>
+                                                                                    </div>
+                                                                                </td>
+                                                                                <td width="80">
+                                                                                    <div class="column1">
+                                                                                        <div class="slds-align_absoute-center">
+                                                                                            <b>{!v.detailanlaysis.assessment.processing.categories[0].composition[1].name}</b>
+                                                                                        </div>
+                                                                                    </div>
+                                                                                </td>
+                                                                            </tr>
+                                                                        </tbody>
+                                                                    </table>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="slds-box_sblue">
+                                                            <table>
+                                                                <tbody>
+                                                                    <tr>
+                                                                        <td width="30">
+                                                                            <div class="slds-p-right_small slds-p-top_xx-small slds-m-bottom_xx-small">
+                                                                                <div class="tablehead">
+                                                                                    <div class="clearfix">
+                                                                                        <div class="slds-float_right">
+                                                                                          <!--Abstractness-->{!v.X100worteabstractness}
+                                                                                        </div>
+                                                                                    </div>
+                                                                                </div>
+                                                                            </div>
+                                                                        </td>
+                                                                        <td width="50">
+                                                                            <div class="clearfix">
+                                                                                <div class="slds-m-around_small">
+                                                                                    <div class="slds-float_right">
+                                                                                        <div onclick="{!c.AbstractnessInfo}">
+                                                                                            <img src="{!$Resource.info}" style="height:20px;width:20px;"/>
+                                                                                        </div>
+                                                                                        <!--Use aura:if tag to display/hide popup based on isModalOpen value-->
+                                                                                        <aura:if isTrue="{!v.isAbstractnessOpen}">
+                                                                                            <!-- Modal/Popup Box starts here-->
+                                                                                            <section role="dialog" tabindex="-1" aria-labelledby="modal-heading-01" aria-modal="true" aria-describedby="modal-content-id-1" class="slds-modal slds-fade-in-open">
+                                                                                                <div class="slds-modal__container">
+                                                                                                    <!-- Modal/Popup Box Header Starts here-->
+                                                                                                    <header class="slds-modal__header">
+                                                                                                        <div class="slds-clearfix">
+                                                                                                            <div class="slds-float_left">
+                                                                                                                <h2 id="modal-heading-01" class="slds-text-heading_medium slds-hyphenate">{!v.X100worteabstractness}</h2>
+                                                                                                            </div>
+                                                                                                            <div class="slds-float_right">
+                                                                                                                <lightning:buttonIcon iconName="utility:close"
+                                                                                                                                      onclick="{!c.closeAbstractnessInfo }"
+                                                                                                                                      alternativeText="close"
+                                                                                                                                      variant="bare-inverse"/>
+                                                                                                            </div>
+                                                                                                        </div>
+                                                                                                    </header>
+                                                                                                    <!--Modal/Popup Box Body Starts here-->
+                                                                                                    <div class="slds-modal__content slds-p-around_medium" id="modal-content-id-1">
+                                                                                                        <p>{!v.detailanlaysis.assessment.needs.categories[0].info}</p>
+                                                                                                    </div>
+                                                                                                </div>
+                                                                                            </section>
+                                                                                            <div class="slds-backdrop slds-backdrop_open"></div>
+                                                                                        </aura:if>
+                                                                                    </div>
+                                                                                </div>
+                                                                            </div>
+                                                                        </td>
+                                                                    </tr>
+                                                                </tbody>
+                                                            </table>
+                                                        </div>
+                                                        <div class="slds-box_normal slds-theme_default">
+                                                            <div class="slds-p-top_small slds-p-left_small slds-p-right_small slds-p-bottom_small">
+                                                                <table>
+                                                                    <tbody>
+                                                                        <tr>
+                                                                            <td width="80">
+                                                                                <div class="column">
+                                                                                    <div class="slds-align_absolute-center">
+                                                                                        {!v.detailanlaysis.assessment.processing.categories[1].composition[0].name}
+                                                                                    </div>
+                                                                                </div>
+                                                                            </td>
+                                                                            <td width="50">
+                                                                                <div class="slds-align_absolute-center">
+                                                                                    <span style="font-size:16px;">|</span>
+                                                                                </div>
+                                                                            </td>
+                                                                            <td width="80">
+                                                                                <div class="column1">
+                                                                                    <div class="slds-align_absoute-center">
+                                                                                        <b>{!v.detailanlaysis.assessment.processing.categories[1].composition[1].name}</b>
+                                                                                    </div>
+                                                                                </div>
+                                                                            </td>
+                                                                        </tr>
+                                                                    </tbody>
+                                                                </table>
+                                                            </div>
+                                                        </div>
+                                                        <div class="slds-box_sblue">
+                                                            <table>
+                                                                <tbody>
+                                                                    <tr>
+                                                                        <td width="30">
+                                                                            <div class="slds-p-right_small slds-p-top_xx-small slds-m-bottom_xx-small">
+                                                                                <div class="tablehead">
+                                                                                    <div class="clearfix">
+                                                                                        <div class="slds-float_right">
+                                                                                            <!--Emotionality-->
+                                                                                            {!v.X100worteemotionality}
+                                                                                        </div>
+                                                                                    </div>
+                                                                                </div>
+                                                                            </div>
+                                                                        </td>
+                                                                        <td width="50">
+                                                                            <div class="clearfix">
+                                                                                <div class="slds-m-around_small">
+                                                                                    <div class="slds-float_right">
+                                                                                        <div onclick="{!c.EmotionalityInfo}">
+                                                                                            <img src="{!$Resource.info}" style="height:20px;width:20px;"/>
+                                                                                        </div>
+                                                                                        <!--Use aura:if tag to display/hide popup based on isModalOpen value-->
+                                                                                        <aura:if isTrue="{!v.isEmotionalityOpen}">
+                                                                                            <!-- Modal/Popup Box starts here-->
+                                                                                            <section role="dialog" tabindex="-1" aria-labelledby="modal-heading-01" aria-modal="true" aria-describedby="modal-content-id-1" class="slds-modal slds-fade-in-open">
+                                                                                                <div class="slds-modal__container">
+                                                                                                    <!-- Modal/Popup Box Header Starts here-->
+                                                                                                    <header class="slds-modal__header">
+                                                                                                        <div class="slds-clearfix">
+                                                                                                            <div class="slds-float_left">
+                                                                                                                <h2 id="modal-heading-01" class="slds-text-heading_medium slds-hyphenate"><!--Emotionality-->{!v.X100worteemotionality}</h2>
+                                                                                                            </div>
+                                                                                                            <div class="slds-float_right">
+                                                                                                                <lightning:buttonIcon iconName="utility:close"
+                                                                                                                                      onclick="{!c.closeEmotionalityInfo }"
+                                                                                                                                      alternativeText="close"
+                                                                                                                                      variant="bare-inverse"/>
+                                                                                                            </div>
+                                                                                                        </div>
+                                                                                                    </header>
+                                                                                                    <!--Modal/Popup Box Body Starts here-->
+                                                                                                    <div class="slds-modal__content slds-p-around_medium" id="modal-content-id-1">
+                                                                                                        <p>{!v.detailanlaysis.assessment.needs.categories[0].info}</p>
+                                                                                                    </div>
+                                                                                                </div>
+                                                                                            </section>
+                                                                                            <div class="slds-backdrop slds-backdrop_open"></div>
+                                                                                        </aura:if>
+                                                                                    </div>
+                                                                                </div>
+                                                                            </div>
+                                                                        </td>
+                                                                    </tr>
+                                                                </tbody>
+                                                            </table>
+                                                        </div>
+                                                        <div class="slds-box_normal slds-theme_default">
+                                                            <div class="slds-p-top_small slds-p-left_small slds-p-right_small slds-p-bottom_small">
+                                                                <table>
+                                                                    <tbody>
+                                                                        <tr>
+                                                                            <td width="80">
+                                                                                <div class="column">
+                                                                                    <div class="slds-align_absolute-center">
+                                                                                        {!v.detailanlaysis.assessment.processing.categories[2].composition[0].name}
+                                                                                    </div>
+                                                                                </div>
+                                                                            </td>
+                                                                            <td width="50">
+                                                                                <div class="slds-align_absolute-center">
+                                                                                    <span style="font-size:16px;">|</span>
+                                                                                </div>
+                                                                            </td>
+                                                                            <td width="80">
+                                                                                <div class="column1">
+                                                                                    <div class="slds-align_absoute-center">
+                                                                                        <b>{!v.detailanlaysis.assessment.processing.categories[2].composition[1].name}</b>
+                                                                                    </div>
+                                                                                </div>
+                                                                            </td>
+                                                                        </tr>
+                                                                    </tbody>
+                                                                </table>
+                                                            </div>
+                                                        </div>
+                                                        <div class="heading">
+                                                            <div class="slds-p-top_large slds-p-bottom_large">
+                                                                <div class="slds-align_absolute-center">
+                                                                    {!v.detailanlaysis.assessment.processing.value}
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <!--First Internal Component ends-->
+                                        <!--Second Section-->
+                                        <table>
+                                            <tbody>
+                                                <tr>
+                                                    <td class="shaded-background" width="35">
+                                                        <div class="slds-align_absolute-center">
+                                                            <img src="{!$Resource.lhreicon}" style="height:30px;width:30px;" valign="top"/>
+                                                        </div>
+                                                    </td>
+                                                    <td width="126">
+                                                        <div class="body2">
+                                                            <div class="slds-p-left_medium slds-p-bottom_medium slds-p-top_medium">
+                                                                {!v.X100worterelationshipquality}
+                                                                
+                                                               <!-- lhre Bezeihungsqualitat <br/>
+                                                                ist -->&nbsp;<b>{!v.progress}</b><br/>
+                                                                 
+                                                                <div class="slds-box_meter slds-theme_default">
+                                                                    <div class="slds-progress-bar slds-progress-bar_large" aria-valuemin="0" aria-valuemax="100" aria-valuenow="{!v.quality}" role="progressbar">
+                                                                        <span aura:id="prgBar" class="slds-progress-bar__value" style="{!'width:'+v.quality+'%'}" >
+                                                                            <div class="myProgress">
+                                                                                <div class="myBar slds-p-left_x-small ">{!v.quality}%</div>
+                                                                            </div>
+                                                                            <span class="slds-assistive-text">{!v.quality}%</span>
+                                                                        </span>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                        <!--Separator//-->
+                                       <div class="slds-grid slds-gutters">
+                                            <div class="slds-col slds-size_4-of-4">
+                                                <div class="shaded-background" style="border-top:2px dashed black;"></div> 
+                                            </div>
+                                            <!--div class="slds-col slds-size_1-of-4">
+                                                <div style="border-top:2px dashed black;padding-left:0px;"></div>
+                                            </div-->
+                                        </div>
+                                        <!--Third Section-->
+                                        <table>
+                                            <tbody>
+                                                <tr>
+                                                    <td class="shaded-background" width="26.5">
+                                                        <div class="slds-align_absolute-center">
+                                                            <img src="{!$Resource.Dieicon}" style="height:30px;width:30px;" valign="top"/>
+                                                        </div>
+                                                    </td>
+                                                   <!-- <td width="136">-->
+                                                       <td width="126"> 
+                                                        <div class="body2">
+                                                            <div class="slds-p-left_medium slds-p-top_medium slds-p-bottom_medium">
+                                                              <!--  Die Tendenz lhrer <br/>
+                                                                Bezeihungsqualitat ist-->
+                                                                {!v.X100worterelationshiptendency}
+                                                                
+                                                                <br/>
+                                                                <b>{!v.trend}</b>
+                                                            </div>
+                                                        </div>
+                                                    </td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                        <!--Separator//-->
+                                        <div class="slds-grid slds-gutters">
+                                            <div class="slds-col slds-size_4-of-4">
+                                                <div class="shaded-background" style="border-top:2px dashed black;"></div> 
+                                            </div>
+                                            <!--div class="slds-col slds-size_3-of-4">
+                                                <div style="border-top:2px dashed black;padding-left:0px;"></div>
+                                            </div-->
+                                        </div>
+                                        <!--Fourth Section-->
+                                        <table>
+                                            <tbody>
+                                                <tr>
+                                                    <td class="shaded-background" width="26.5">
+                                                        <div class="slds-align_absolute-center">
+                                                            <img src="{!$Resource.arrowdecrease}" style="height:30px;width:30px;" valign="top"/>
+                                                        </div>
+                                                    </td>
+                                                    <td width="126">
+                                                        <div class="body2">
+                                                            <div class="slds-p-left_medium slds-p-top_medium slds-p-bottom_medium">
+                                                               <!-- The text appears-->
+                                                                {!v.X100wortetextAppears}&nbsp;  <b>{!v.detailanlaysis.assessment.authenticity.value}</b>
+                                                            </div>
+                                                        </div>
+                                                    </td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                        <!--Separator//-->
+                                        <div class="slds-grid slds-gutters">
+                                            <div class="slds-col slds-size_4-of-4">
+                                                <div class="shaded-background" style="border-top:2px dashed black;"></div> 
+                                            </div>
+                                            <!--div class="slds-col slds-size_3-of-4">
+                                                <div style="border-top:2px dashed black;padding-left:0px;"></div>
+                                            </div-->
+                                        </div>
+                                        <!--Fifth Section-->
+                                        <table>
+                                            <tbody>
+                                                <tr>
+                                                    <td class="shaded-background" width="31.5">
+                                                        <div class="slds-align_absolute-center">
+                                                            <img src="{!$Resource.info}" style="height:30px;width:30px;" valign="top"/>
+                                                        </div>
+                                                    </td>
+                                                    <td width="100">
+                                                        <div class="body2">
+                                                            <div class="slds-p-left_medium slds-p-top_medium">
+                                                                <!--Tips for addressing -->
+                                                                {!v.X100wortehintsforspeech}
+                                                            </div>
+                                                        </div>
+                                                    </td>
+                                                    <td width="20">
+                                                        <div class="link">
+                                                            <div class="clearfix">
+                                                                <div class="slds-float_right">
+                                                                    <div class="slds-p-right_xx-small slds-p-bottom_small slds-p-top_medium">
+                                                                        <a aura:id="label3" onclick="{!c.ProfileDetailComp}"> ><!--more-->{!v.X100wortemore}...</a>
+                                                                        <a aura:id="label4" onclick="{!c.ProfileDetailComp}" class="toggle"> >{!v.X100worteless}...</a>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                        <!--Separator//-->
+                                        <table>
+                                            <tbody>
+                                                <tr>
+                                                    <td class="shaded-background" width="27.5">
+                                                        <div class="slds-align_absolute-center">
+                                                            <span style="font-size:27px;line-height:5px;">-----</span>
+                                                        </div>
+                                                    </td>
+                                                    <td width="130">
+                                                        <div class="slds-p-top_x-small">
+                                                            <span style="font-size:27px;line-height:5px;">-------------------------</span>
+                                                        </div>
+                                                    </td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                        <!--Second Internal Component start//-->
+                        <div aura:id="ProfileDetailComp" class="slds-card toggle">
+                            <div class="slds-box slds-p-left_large slds-p-top_medium">
+                                <table width="300">
+                                    <tbody>
+                                        <tr>
+                                            <table>
+                                                <tbody>
+                                                    <tr>
+                                                        <td class="header" width="200">
+                                                           <!-- Motivation analysis-->
+                                                            {!v.X100wortemotiveanalysis}
+                                                        </td>
+                                                        <td class="link" widh="10" align="right">
+                                                            <div class="clearfix">
+                                                                <div class="slds-float_right">
+                                                                    <a onclick="{!c.ProfileDetailComp}"> >{!v.X100worteless}...</a>
+                                                                </div>
+                                                            </div>
+                                                        </td>
+                                                    </tr>
+                                                </tbody>
+                                            </table>
+                                        </tr>
+                                        <tr>
+                                            <td class="head">
+                                                <div class="slds-m-top_medium">
+                                                   <!--„What kind of thinking and acting characterizes your counterpart?“-->
+                                                    {!v.X100wortehintforspeechheadline1}
+                                                </div>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td class="text" width="150">
+                                                <div class="slds-m-top_small">
+                                                    {!v.detailanlaysis.assessment.instructions.type}
+                                                </div>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td class="head">
+                                                <div class="slds-m-top_medium">
+                                                 <!--„Answer these questions for your counterpart and you've already pretty much won:“--> 
+                                                     {!v.X100wortehintforspeechheadline2}
+                                                </div>
+                                            </td> 
+                                        </tr>
+                                        <tr>
+                                            <td class="text" width="150">
+                                                <div class="slds-m-top_small">
+                                                    >    {!v.detailanlaysis.assessment.instructions.questions[0]}<br/><br/>
+                                                    >    {!v.detailanlaysis.assessment.instructions.questions[1]}<br/><br/>
+                                                    >    {!v.detailanlaysis.assessment.instructions.questions[2]}<br/><br/>
+                                                    >    {!v.detailanlaysis.assessment.instructions.questions[3]}<br/>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td class="head">
+                                                <div class="slds-m-top_large">
+                                                   <!-- „Strong words for more success“-->
+                                                    {!v.X100wortehintforspeechheadline3}
+                                                </div>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td class="text" width="150">
+                                                <div class="slds-m-top_small">
+                                                    {!v.detailanlaysis.assessment.instructions.words}
+                                                    <!--sophisticated, goal-oriented, powerful, strong, bear-strong,
+                                                    recognized, demanding, high-quality, courageous, combative, 
+                                                    dominating, mastering, elite, special, competent, clever,
+                                                    strategic, outstanding, exclusive, superior, optimize…<br/><br/>
+                                                    {!v.X100worteanswer}-->
+                                                </div>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                        <!--Second Internal Component ends//-->
+                        <!--Text out of the box//-->
+                        <div class="body3">
+                            <div class="slds-p-top_medium"> 
+                                <!-- An average of <b>{!v.wordCount} words</b> were analyzed for this profile.-->
+                            {!v.X100wortewordcount}&nbsp;<strong>{!v.wordCount}&nbsp;{!v.X100wortewordsAnalyzedForProfile}</strong>&nbsp;{!v.X100wortewordcount2}
+                            </div>
+                        </div>
+                    </div>
+                            <aura:set attribute="else">
+                                <!--<div style="background-color:White">
+                                    No data availiable.
+                                </div> -->
+                                    <div class="slds-p-top_large  slds-align_absolute-center" >
+                                     <div class="body">
+                                       <div class="slds-p-left_medium">No data availiable.</div>
+                                          </div>
+                                       </div>
+                                  
+                                 </aura:set>
+                            </aura:if>
+                       
+                       
+                </div>
+        <!--Main Component ends//-->
+                    </div>
+                     
+    </div>
+</aura:component>

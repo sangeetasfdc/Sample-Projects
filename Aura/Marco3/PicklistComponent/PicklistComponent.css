@@ -1,0 +1,98 @@
+.THIS .verticalAlign {
+	cursor: pointer;
+    padding: 0px 5px !important;
+}
+
+.THIS .highlightoption{
+    background-color: #29d4b0;
+}
+
+.THIS .slds-dropdown {
+    padding:0px !important;
+}
+.THIS .fullWidth {
+	width: 100% !important;
+}
+.THIS .disabledItem {
+    color: #bbb;
+    cursor: no-drop; 
+}
+.THIS .recordListBox {
+	margin-top:0px !important;
+	overflow-y: scroll;
+}
+.THIS .slds-listbox li {
+    padding: .45rem 0.7rem !important;
+    display: flex;
+}
+
+.THIS .inputBox {
+    border: 2px solid #29d4b0;
+    border-radius: 10px 10px 10px 10px;
+    background-color: #36454F;
+    color: #29d4b0;
+    cursor: pointer;
+    max-width: 460px;
+}
+.THIS .inputBox:hover{
+    cursor: pointer;
+}
+.THIS .slds-input{
+    background-color: #36454F;
+    border: none;
+    padding-top: 1%;
+    max-width: 460px;
+}
+.THIS .slds-input:hover{
+    cursor: pointer;
+}
+.THIS .slds-combobox_container{
+    max-width: 460px;
+    text-align: center;
+}
+.THIS .slds-icon {
+    width: 1rem;
+    height: 1rem;
+    fill: #29d4b0;
+}
+.THIS .slds-icon:hover {
+    fill: #ffffff;
+}
+
+.THIS .eachItem:hover {
+    background-color: #29d4b0;
+    cursor: pointer;
+    color: #ffffff;
+}
+.THIS .showPill{
+    background-color: #36454F;
+    color: #29d4b0;
+    font-size: 12px;
+    border-color: #29d4b0;
+    max-width: 195px;
+}
+.THIS .showPill:hover{
+    background-color: #29d4b0;
+    color: #fff;
+}
+.THIS .inputIcon {
+	z-index: 99;
+    padding: 4px 0;
+}
+.THIS .slds-dropdown{
+    background-color: #36454F;
+    color: #29d4b0;
+}
+/* For Scrolling */
+.THIS ::-webkit-scrollbar {
+    width: 7px;
+    height: 7px;
+    background: #29d4b0;
+}
+.THIS ::-webkit-scrollbar-track {
+   display: none !important;
+}
+.THIS ::-webkit-scrollbar-thumb {
+    border-radius: 10px;
+    background: #36454F;
+}

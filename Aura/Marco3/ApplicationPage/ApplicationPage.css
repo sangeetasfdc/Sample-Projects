@@ -1,0 +1,157 @@
+.THIS{
+    background-image: url('/marconifinancial/resource/Banner') !important; 
+    height: 77vh;
+    width: 100%;
+    background-repeat: no-repeat;
+    background-size: 100% 100%;
+}
+
+.THIS .spinnerback{
+    background-image: none;
+}
+
+.THIS .thbackground{
+    background:#101010;
+}
+
+.THIS .question2{
+    font-size: 20px;
+    font-family: url("{!$Resource.OpenSans300}");
+    color: #29d4b0;
+    padding-top: 4%;
+    text-align: center;
+    width: 70%;
+}
+
+.THIS .columnheader{
+    font-size: medium;
+}
+
+.THIS .tableinput{
+    margin-top:-1rem;
+    color: #101010;
+}
+
+.THIS .addbtn{
+    --sds-c-button-line-height : 1rem;
+    }
+    
+    .THIS .bothbutton{
+        position: fixed;
+        left: 43.5%;
+        bottom: 20%;
+    }
+    
+    .THIS .singlenext{
+        position: fixed;
+        left: 47%;
+        bottom: 20%;
+    }
+    
+    
+    .THIS .questionTitle{
+        color: #FFFFFF;
+        font-size: 30px;
+        font-family: url("{!$Resource.Oxygen}");
+    }
+    
+    .THIS .QuestionOuter{
+        padding-top:1%;
+    }
+    
+    .THIS .radio-style{
+        margin-top:3rem;
+    }
+    
+    .THIS .navigationButtons{
+        padding-top: 5%;
+    }
+    
+    .THIS .button-style{
+        padding:0.3rem 2rem;
+        
+    }
+    .THIS .nxt-btn:disabled{
+        background-color: #848482;
+        color: #fff;
+        border-color: #848482;
+    }
+    
+    .THIS .input{
+        font: Open Sans;
+        width: 120%;
+        border-radius: 0 0 0 0 ;
+        all: unset;
+        border-bottom: 2px solid #FFFFFF;
+        background-color: transparent;
+        box-sizing: none;
+        color: #FFFFFF;
+        font-size: 16px;
+    }
+    
+    .THIS .input:hover{
+        cursor: pointer;
+    }
+    
+    .THIS .input{
+        background-color: transparent;
+    }
+    
+    .THIS ::placeholder{
+        font-size: 14px;
+    }
+    
+    .THIS .nxt-btn:disabled:hover{
+        background-color: #848482;
+        color: #fff;
+        border-color: #848482;
+    }
+    
+    .THIS .nxt-btn:hover{
+        background-color: #29D4B0;
+        color: #fff;
+        border-color: #848482;
+    }
+    
+    .THIS .nxt-btn{
+        --sds-c-button-brand-color-background-hover: #29D4B0;
+            --sds-c-button-brand-color-border-hover: #29D4B0;
+            --sds-c-button-brand-color-background-active : #29d4b0;
+            --sds-c-button-brand-color-border-active : #29d4b0;
+            
+            color: #29D4B0;
+            height: 2.5rem;
+            background-color: transparent;
+            border:2px solid #29D4B0;
+            padding: 0.3rem 0.8rem 0.3rem 0.8rem;
+            text-align: center;
+            vertical-align: middle;
+            /*justify-content: center;*/
+            background-image: none;
+            /* margin-right: 1rem;*/
+            border-top: 1px solid #29D4B0;
+            border-left: 1px solid #29D4B0;
+            border-radius: 10px 10px 10px 10px;
+            margin-top:3rem;
+        }
+        
+        .THIS .slds-radio_faux{
+            background-color:#3d3939 !important;
+        }
+        
+        .THIS .slds-radio_faux:checked:after {
+            background-color:#fff !important;
+            
+        }
+        
+        .THIS .ques11style{
+            color:#29D4B0 !important;
+            font-family: url("{!$Resource.Oxygen}");
+            font-size:30px;
+        }
+        
+        .THIS .ques11style{
+            color: #29D4B0 !important;
+            font-size: 10px;
+            font-family: url("{!$Resource.Oxygen}");     
+        }
